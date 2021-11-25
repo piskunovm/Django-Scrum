@@ -1,0 +1,69 @@
+{% load static %}
+
+<div id="setban" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">
+                    Установить БАН</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form action="{% url 'mainapp:set_user_ban_status' %}" method="post">
+                {% csrf_token %}
+                <input id="user_id" hidden="hidden" value="{{ author_user.pk }}" name="user_id">
+                <div class="form-group col-md-10 mx-auto">
+                    <div class="form-group">
+                        <label for="reason" style="margin-top: 5px; margin-bottom: 5px;">
+                            Укажите причину:
+                        </label>
+                        <p><select name="reason" required="required" id="reason">
+                                <option>Недостойное поведение</option>
+                                <option>Спам</option>
+                                <option>Жестокость</option>
+                                <option>Порнографический контент</option>
+                                <option>Другое</option>
+                            </select></p>
+                        <label for="ban_description" style="margin-top: 5px; margin-bottom: 5px;">
+                            Дополнительное описание:
+                        </label>
+                        <textarea name="ban_description" class="form-control" id="ban_description" rows="4" placeholder="Подробное описание (не обязательно)"></textarea>
+                        <label for="ban_time" style="margin-top: 5px; margin-bottom: 5px;">
+                            Время:
+                        </label>
+                        <p><select name="ban_time" required="required" id="ban_time">
+                                <option>5 минут</option>
+                                <option>30 минут</option>
+                                <option>1 час</option>
+                                <option>12 часов</option>
+                                <option>1 сутки</option>
+                                <option>7 дней</option>
+                                <option>1 месяц</option>
+                                <option>навсегда</option>
+                            </select></p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-outline-danger" id="ban">
+                            Забанить
+                        </button>
+                        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">
+                            Отмена
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<form method="post" class="post_moderation_preview mx-auto rounded justify-content-center">
+    <button type="button" class="btn btn-sm btn_archive mx-0" data-bs-toggle="modal" data-bs-target="#setban">
+        Установить бан
+    </button>
+</form>
+
+
+<!--<script src="{% static 'js/user_ban.js' %}"></script>-->

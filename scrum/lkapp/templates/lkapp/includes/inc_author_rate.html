@@ -1,0 +1,26 @@
+{% load static %}
+
+<div class="d-flex p-2" id="authorRate">
+    {% if rate_author >= 0 and rate_author < 4 %}
+        <p class="d-flex align-items-center bg-danger rounded-circle text-light shadow m-0"
+           style="width: 36px; height: 36px;">
+            <b class="col-12 rateAuthor" style="text-align: center">{{ rate_author }}</b>
+        </p>
+    {% endif %}
+    {% if rate_author >= 4 and rate_author < 7 %}
+        <p class="d-flex align-items-center bg-warning rounded-circle text-light shadow m-0"
+           style="width: 36px; height: 36px;">
+            <b class="col-12 rateAuthor" style="text-align: center">{{ rate_author }}</b>
+        </p>
+    {% endif %}
+    {% if rate_author >= 7 %}
+        <p class="d-flex align-items-center bg-success rounded-circle text-light shadow m-0"
+           style="width: 36px; height: 36px;">
+            <b class="col-12 rateAuthor" style="text-align: center">{{ rate_author }}</b>
+        </p>
+    {% endif %}
+</div>
+
+{% block js %}
+    <script src="{% static 'js/rounding_rate.js' %}" defer></script>
+{% endblock %}

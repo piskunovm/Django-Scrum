@@ -1,0 +1,296 @@
+{% load static %}
+{% if all_comments %}
+    <div id="comment_container"
+         class="all_comments container article_card blog-post shadow p-3 bg-white rounded w-container">
+        <h3 class="comments-heading">Комментарии</h3>
+        <div class="infinite-container">
+            {% for comment in all_comments %}
+                <div class="comment_card infinite-item" id="{{ comment.id }}">
+                    <div id="#{{ comment.id }}">
+                        <div class="comment_info">
+                            <a href="{% url 'mainapp:profile_page' comment.author_comment.id %}"
+                               class="article_user">{{ comment.author_comment.username }}</a>
+                            <p class="article_creation_data">{{ comment.created_at }}</p>
+                        </div>
+                        {% if comment.visibility == 0 %}
+                            <div id="{{ comment.id }}">
+                                <p style='color: #999;'>Комментарий удален</p>
+                            </div>
+                        {% else %}
+                            <p class="comment_text">{{ comment.comment_text|safe }}</p>
+                            <div class="article_comments_likes">
+                                <div class="article_likes_counter">
+                                    <div class="comments_icon">
+                                        {% if user.is_authenticated %}
+                                            <a href="##" id="disl{{ comment.id }}" class='lk' name="{{ comment.id }}">
+                                                {% for like_c in like_comment %}
+                                                    {% if like_c.obj == comment %}
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                             fill="{{ like_c.color }}"
+                                                             class="bi bi-heart comment_like_icon" viewBox="0 0 16 16">
+                                                            <path
+                                                                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                                        </svg>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </a>
+                                        {% else %}
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 class="bi bi-heart comment_like_icon" viewBox="0 0 16 16">
+                                                <path
+                                                        d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                            </svg>
+                                        {% endif %}
+                                    </div>
+                                    <div>{{ comment.get_count_comment_likes }}</div>
+                                </div>
+                                <div class="article_dislike_counter">
+                                    <div class="article_dislike_counter">
+                                        <div class="dislike_icon">
+                                            {% if user.is_authenticated %}
+                                                <a href="##" id="disl{{ comment.id }}" class='dl'
+                                                   name="{{ comment.id }}">
+                                                    {% for dislike_c in dislike_comment %}
+                                                        {% if dislike_c.obj == comment %}
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                 height="16"
+                                                                 class="bi bi-emoji-frown" viewBox="0 0 16 16"
+                                                                 fill="{{ dislike_c.color }}">
+                                                                <path
+                                                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                                                <path
+                                                                        d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.498 3.498 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.498 4.498 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+                                                            </svg>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </a>
+                                            {% else %}
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     class="bi bi-emoji-frown"
+                                                     viewBox="0 0 16 16">
+                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                                    <path
+                                                            d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.498 3.498 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.498 4.498 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+                                                </svg>
+                                            {% endif %}
+                                        </div>
+                                        <div>{{ comment.get_count_comment_dislikes }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if user.is_authenticated %}
+                            {% if not ban %}
+                                <div class="response_comment"
+                                   onclick="addReview('{{ comment.author_comment.username }}', '{{ comment.id }}')">Ответить</div>
+                                <form method="post" id="wf-form-Comment-Form" name="wf-form-Comment-Form"
+                                      data-name="Comment Form"
+                                      style="margin-bottom: 10px;" class="comments_form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="main_parent" id="contactparent-{{ comment.id }}"
+                                           value="">
+                                    {{ comment_form.media }}
+                                    <div class="comment_form_block">
+                        <textarea hidden="hidden" class="comment_form" name="comment_text"
+                                  id="parenttext-{{ comment.id }}" placeholder="Response.." cols="50"
+                                  rows="2"></textarea>
+                                        <input id="button-{{ comment.id }}" type="button" hidden="hidden"
+                                               value="Сохранить"
+                                               id="disl{{ comment.id }}" name="{{ comment.id }}"
+                                               class="btn_comment send_comment_button w-button shadow-lg rounded repcom"
+                                               main_parent:="{{ comment.id }}">
+                                    </div>
+                                </form>
+                            {% endif %}
+                                {% if user.id != comment.author_comment.id %}
+                                    <div>
+                                        <a href="#"
+                                           class="{% if ban %} disabled {% endif %} content_toggle-{{ comment.id }} btn btn-sm btn_archive text-center mt-3"
+                                           role="button" style='font-size:12px; margin-bottom: 10px;'>
+                                            Пожаловаться
+                                        </a>
+                                    </div>
+                                    <div class="content_block-{{ comment.id }}" style="display: none;">
+                                        <form method="post" id="complain_form" name="complain_form"
+                                              data-name="Complain Form"
+                                              style="margin-bottom: 10px;" class="complain_form"
+                                              action="{% url 'mainapp:comment_complaint' comment.id %}">
+                                            {% csrf_token %}
+                                            {{ comment_form.media }}
+                                            <div class="complain_form_block">
+                            <textarea class="complain_form" name="comment_complain_text" placeholder="Ваша жалоба"
+                                      cols="60" rows="2" style=' font-size:12px;'></textarea>
+                                                <div style='margin-top: 5px;'>
+                                                    <input id="complain_button" type="submit" value="Отправить"
+                                                           class="btn btn-sm btn_blue shadow-lg rounded"
+                                                           style='font-size:12px;'>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <script>
+                                        $(document).ready(function () {
+                                            $('.content_toggle-{{comment.id}}').click(function () {
+                                                $('.content_block-{{comment.id}}').slideToggle(300);
+                                                return false;
+                                            });
+                                        });
+                                    </script>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                <br>
+                {% for replay in comment.replies.all %}
+                    <div class="comment_card response_comment_card" id="{{ replay.id }}">
+                        <div class="comment_info">
+                            <a href="#" class="article_user">{{ replay.author_comment.username }}</a>
+                            <p class="article_creation_data">{{ replay.created_at }}</p>
+                        </div>
+                        {% if replay.visibility == 0 %}
+                            <div id="{{ replay.id }}">
+                                <p style="color: #999;">Комментарий удален</p>
+                            </div>
+                        {% else %}
+                            <p class="comment_text">{{ replay.comment_text|safe }}</p>
+                            <div class="article_comments_likes">
+                                <div class="article_likes_counter">
+                                    <div class="comments_icon">
+                                        {% if user.is_authenticated %}
+                                            <a href="##" id="disl{{ replay.id }}" class='lk' name="{{ replay.id }}">
+                                                {% for like_c in like_comment %}
+                                                    {% if like_c.obj == replay %}
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                             fill="{{ like_c.color }}"
+                                                             class="bi bi-heart comment_like_icon" viewBox="0 0 16 16">
+                                                            <path
+                                                                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                                        </svg>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </a>
+                                        {% else %}
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 class="bi bi-heart comment_like_icon" viewBox="0 0 16 16">
+                                                <path
+                                                        d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                            </svg>
+                                        {% endif %}
+                                    </div>
+                                    <div>{{ replay.get_count_comment_likes }}</div>
+                                </div>
+                                <div class="article_dislike_counter">
+                                    <div class="article_dislike_counter">
+                                        <div class="dislike_icon">
+                                            {% if user.is_authenticated %}
+                                                <a href="##" id="disl{{ replay.id }}" class='dl' name="{{ replay.id }}">
+                                                    {% for dislike_c in dislike_comment %}
+                                                        {% if dislike_c.obj == replay %}
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                 height="16" class="bi bi-emoji-frown"
+                                                                 viewBox="0 0 16 16" fill="{{ dislike_c.color }}">
+                                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                                                <path
+                                                                        d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.498 3.498 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.498 4.498 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+                                                            </svg>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </a>
+                                            {% else %}
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     class="bi bi-emoji-frown"
+                                                     viewBox="0 0 16 16">
+                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                                    <path
+                                                            d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.498 3.498 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.498 4.498 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+                                                </svg>
+                                            {% endif %}
+                                        </div>
+                                        <div>{{ replay.get_count_comment_dislikes }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if user.is_authenticated %}
+                            {% if not ban %}
+                                <div class="response_comment"
+                                     onclick="addAnotherReview('{{ replay.author_comment.username }}', '{{ replay.id }}', '{{ comment.id }}')">Ответить</div>
+                                <form method="post" id="wf-form-Comment-Form_2"
+                                      name="wf-form-Comment-Form"
+                                      data-name="Comment Form"
+                                      style="margin-bottom: 10px;" class="comments_form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="parent"
+                                           id="another_contactparent-{{ replay.id }}"
+                                           value="">
+                                    <input type="hidden" name="main_parent"
+                                           id="contactparent-{{ replay.id }}" value="">
+                                    {{ comment_form.media }}
+                                    <div class="comment_form_block">
+                    <textarea hidden="hidden" class="comment_form" name="comment_text" id="parenttext-{{ replay.id }}"
+                              placeholder="Response.." cols="50" rows="2"></textarea>
+                                        <input id="button-{{ replay.id }}" hidden="hidden" type="button"
+                                               value="Сохранить"
+                                               id="disl{{ comment.id }}" name="{{ replay.id }}"
+                                               class="btn_comment send_comment_button w-button shadow-lg rounded repcom"
+                                               main_parent:="{{ comment.id }}"
+                                               parent:="{{ replay.id }}">
+                                    </div>
+                                </form>
+                            {% endif %}
+                                {% if user.id != replay.author_comment.id %}
+                                    <div>
+                                        <a href="#"
+                                           class="{% if ban %} disabled {% endif %} content_toggle-{{ replay.id }} btn btn-sm btn_archive text-center mt-3"
+                                           role="button"
+                                           style='font-size:12px; margin-bottom: 10px;'>
+                                            Пожаловаться
+                                        </a>
+                                    </div>
+                                    <div class="content_block-{{ replay.id }}" style="display: none;">
+                                        <form method="post" id="complain_form" name="complain_form"
+                                              data-name="Complain Form"
+                                              style="margin-bottom: 10px;" class="complain_form"
+                                              action="{% url 'mainapp:comment_complaint' replay.id %}">
+                                            {% csrf_token %}
+                                            {{ comment_form.media }}
+                                            <div class="complain_form_block">
+                        <textarea class="complain_form" name="comment_complain_text" placeholder="Ваша жалоба" cols="60"
+                                  rows="2" style='font-size:12px;'></textarea>
+                                                <div style='margin-top: 5px;'>
+                                                    <input id="complain_button" type="submit"
+                                                           value="Отправить"
+                                                           class="btn btn-sm btn_blue shadow-lg rounded"
+                                                           style='font-size:12px;'>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <script>
+                                        $(document).ready(function () {
+                                            $('.content_toggle-{{ replay.id }}').click(function () {
+                                                $('.content_block-{{ replay.id }}').slideToggle(300);
+                                                return false;
+                                            });
+                                        });
+                                    </script>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <br>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        {% if all_comments.has_next %}
+            <a class="infinite-more-link" href="?page={{ all_comments.next_page_number }}">More</a>
+
+            <div class="loading" style="display: none;">
+                Loading...
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
+
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+<script src="{% static 'js/comment_tape.js' %}"></script>

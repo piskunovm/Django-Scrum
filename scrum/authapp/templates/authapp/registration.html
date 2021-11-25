@@ -1,0 +1,27 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/lkapp.css' %}" />
+{% endblock %}
+
+
+{% block content %}
+<div class="container-2 w-container p-5 mt-3 mb-5 bg-light shadow rounded"
+  style="width: 100%; margin-left: auto; margin-right: auto; max-width: 960px;">
+  <div>
+    <h4>Регистрация</h4>
+  </div>
+  <form method="post" enctype="multipart/form-data" class="mx-auto my-5 p-3 text-center rounded "
+    style="max-width: 300px">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="btns_reg mt-5 d-flex justify-content-between">
+      <button type="submit" class="btn btn-sm btn_save text-center shadow" role="button">Зарегистрироваться</button>
+      <button type="reset" class="btn btn-sm btn-outline-danger btn_archive text-center shadow"
+        role="button">Сбросить</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+<div class="comment_list">
+    {% for comment in comments %}
+        <div class="search_comment_card shadow p-3 mb-5 bg-white rounded">
+            <a href="{% url 'mainapp:read_post' comment.article.id %}"
+               class="search_comment_heading">{{ comment.article.title }}</a>
+            <div class="comment_info">
+                <a href="#" class="comment_user">{{ comment.author_comment }}</a>
+                <p class="comment_creation_data">{{ comment.updated_at }}</p>
+            </div>
+            <p class="search_comment_text">{{ comment.comment_text|safe }}</p>
+            <a href="#" class="search_comment_button w-button shadow rounded">К коментарию</a>
+
+            {#            {% include 'mainapp/includes/likes_comments_counter.html' %}#}
+
+        </div>
+    {% endfor %}
+</div>

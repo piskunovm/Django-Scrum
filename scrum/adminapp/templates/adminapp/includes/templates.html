@@ -1,0 +1,145 @@
+<div> Таблица для категорий
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Название</th>
+                <th scope="col">Создано</th>
+                <th scope="col">Описание</th>
+                <th scope="col">Активно</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>DevOps</td>
+                <td>11.10.2021</td>
+                <td>Раздел деплоев на сервер и прочих штук</td>
+                <td>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Активно/Не активно</label>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div> Таблица для постов
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Категория</th>
+                <th scope="col">Заголовок</th>
+                <th scope="col">Автор</th>
+                <th scope="col">Создано</th>
+                <th scope="col">Обновлено</th>
+                <th scope="col">Активно</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>DevOps</td>
+                <td>Разворачиваем docker на калькуляторе</td>
+                <td>Илья Носов</td>
+                <td>11.10.2021</td>
+                <td>11.10.2021 в 17:12</td>
+                <td>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Активно/Не активно</label>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div> Таблица для пользователей
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Юзернейм</th>
+                <th scope="col">Полное имя</th>
+                <th scope="col">Почта</th>
+                <th scope="col">Роль</th>
+                <th scope="col">Дата регистрации</th>
+                <th scope="col">Последний вход</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>DevOpsForever123</td>
+                <td>Илья Носов</td>
+                <td>DevOpsForever123@gmail.com</td>
+                <td>Супер админ</td>
+                <td>11.10.2021</td>
+                <td>11.10.2021 в 17:12</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<form class="col-md-8">Форма для добавления/редактирования поста
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">
+            <h4>Заголовок</h4>
+        </label>
+        <input class="form-control" id="exampleFormControlInput1" placeholder="">
+    </div>
+
+    <div class="row">
+        <div class="mb-3 col">
+            <label for="formCategorySelect" class="form-label">Выбор категории</label>
+            <select class="form-select" id="formCategorySelect" aria-label="Default select example">
+                <option selected></option>
+                <option value="1">DevOps</option>
+                <option value="2">Python</option>
+                <option value="3">JS</option>
+            </select>
+        </div>
+        <div class="mb-3 col">
+            <label for="formFile" class="form-label">Выбор изображения</label>
+            <input class="form-control" type="file" id="formFile">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">
+            <h4>Превью отображения в
+                ленте</h4>
+        </label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" disabled readonly>
+                </textarea>
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlTextarea2" class="form-label">
+            <h4>Текст статьи</h4>
+        </label>
+        <textarea class="form-control" id="exampleFormControlTextarea2" rows="4"></textarea>
+    </div>
+    <div class="mb-3 row">
+        <div class="col">
+            <label for="staticAuthor" class="col-sm-2 col-form-label">Автор:</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticAuthor" value="Илья Носов">
+            </div>
+        </div>
+        <div class="col">
+            <label for="staticCreationTime" class="col-sm-2 col-form-label">Создано:</label>
+            <div class="col-sm-10">
+                <input type="datetime" readonly class="form-control-plaintext" id="staticCreationTime"
+                    value="17 января 2021 в 13:20">
+            </div>
+        </div>
+        <div class="col">
+            <label for="staticUpdateTime" class="col-sm-2 col-form-label">Обновлено:</label>
+            <div class="col-sm-10">
+                <input type="datetime" readonly class="form-control-plaintext" id="staticUpdateTime"
+                    value="18 января 2021 в 13:25">
+            </div>
+        </div>
+    </div>
+</form>

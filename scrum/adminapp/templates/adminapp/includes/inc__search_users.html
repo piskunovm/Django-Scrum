@@ -1,0 +1,19 @@
+{% load static %}
+
+<div class="search_card shadow p-3 mb-2 bg-white rounded">
+    <form action="javascript:handleSearch()"
+          class="form-inline search-form flex-fill d-flex justify-content-between">
+        <input type="text" class="form-control search_request shadow rounded me-2"
+               name="search_request" id="search_request"
+               placeholder="Введите пользователя..."
+               value="{% if search_request %}{{ search_request }}{% endif %}">
+        <div class="buttons flex-fill d-flex justify-content-between">
+            <button type="submit"
+                    class="btn m-0 ms-3 search_button shadow rounded">Поиск
+            </button>
+            <button type="button" id="reset_search" class="btn m-0 ms-3 reset_button shadow rounded">Сбросить
+            </button>
+        </div>
+    </form>
+</div>
+<script src="{% static 'js/admin_search_users.js' %}"></script>

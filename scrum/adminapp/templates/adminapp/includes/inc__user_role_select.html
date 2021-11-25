@@ -1,0 +1,64 @@
+<form action="#" method="post" class="user_role d-flex">
+    <div id="changeUserRole-modal-{{ user.pk }}" class="modal " tabindex="-1"
+         role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Сменить роль</h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-2">
+                        Вы действительно хотите изменить роль пользователя<br>
+                        <strong>
+                            <span class="text-capitalize">
+                                {{ user.first_name }} {{ user.last_name }}
+                            </span>
+                        </strong>на
+                        <strong>
+                            <span class=" role">
+                                Роль
+                            </span>?
+                        </strong>
+                    </p>
+                </div>
+                <div class="modal-footer" id="changeUserRole-{{ user.pk }}">
+                    <button type="button"
+                            class="btn btn-outline-success switchUserRole"
+                            id="publish_post">
+                        Подтвердить
+                    </button>
+                    <button type="button"
+                            class="btn btn-outline-danger cancelSwitchUserRole"
+                            data-bs-dismiss="modal">
+                        Отмена
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if user.is_superuser %}
+        <select disabled class="selectUserRole col" id="selectUserRole-{{ user.pk }}">
+
+            <option selected value="administrator">
+                Администратор
+            </option>
+        </select>
+    {% else %}
+        <select class="selectUserRole col" id="selectUserRole-{{ user.pk }}">
+            <option {% if user.user_role == "administrator" %} selected {% endif %} value="administrator">
+                Администратор
+            </option>
+            <option {% if user.user_role == "user" %} selected {% endif %} value="user">
+                Обычный пользователь
+            </option>
+            <option {% if user.user_role == "moderator" %} selected {% endif %} value="moderator">
+                Модератор
+            </option>
+        </select>
+    {% endif %}
+
+</form>

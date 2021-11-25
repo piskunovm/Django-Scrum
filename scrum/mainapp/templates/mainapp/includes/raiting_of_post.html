@@ -1,0 +1,11 @@
+{% load static %}
+
+<div class="d-flex mx-2">
+    <div>
+        <img src="{% static 'vendor/img/bar-chart-fill.svg' %}" alt="Рейтинг" width="20" height="20"
+            title="Рейтинг поста">
+    </div>
+    <div class="mx-1" id='id_rating_count'>
+        {{ post.rating}}
+    </div>
+</div>

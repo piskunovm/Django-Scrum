@@ -1,0 +1,29 @@
+<div class="menu_3_lvl shadow rounded p-3 mt-5 mb-5">
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link link-light menu_filters my_posts
+            {% if request.resolver_match.url_name == 'my_posts' %} active_filters shadow rounded {% endif %}" 
+            href="##" id = 'filterpost' name = 'my_posts'>Все</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-light menu_filters published
+            {% if request.resolver_match.url_name == 'published' %} active_filters shadow rounded {% endif %}" 
+            href="##" id = 'filterpost' name = 'published' >Опубликованы</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-light menu_filters moderation
+            {% if request.resolver_match.url_name == 'moderation' %} active_filters shadow rounded {% endif %}" 
+            href="##" id = 'filterpost' name = 'moderation'>На модерации</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-light menu_filters correction
+            {% if request.resolver_match.url_name == 'correction' %} active_filters shadow rounded {% endif %}" 
+            href="##" id = 'filterpost' name = 'correction'>На исправлении</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-light menu_filters archive
+            {% if request.resolver_match.url_name == 'archive' %} active_filters shadow rounded {% endif %}" 
+            href="##" id = 'filterpost' name = 'archive'>Архив</a>
+        </li>
+    </ul>
+</div>

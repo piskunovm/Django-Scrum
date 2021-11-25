@@ -1,0 +1,224 @@
+// Переменные
+@sizeLink: 14px;
+@bgColorBtnBlue: #60bef5;
+@bgColorBtnSave: #6cbc75;
+@bgColorBtnNeg: #dc3444;
+@bgColorTable: #6cbc7547;
+@linkColor: white;
+@linkColorHover: black;
+// Конец
+
+// Основные теги
+html {
+  height: 100%;
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background-color: hsla(0, 0%, 83.3%, 0.52);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #333;
+}
+
+img {
+  max-width: 100%;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+ul,
+ol {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-left: 40px;
+}
+
+a {
+  background-color: transparent;
+  font-size: @sizeLink;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 38px;
+  line-height: 44px;
+  margin-top: 20px;
+}
+
+h2 {
+  font-size: 32px;
+  line-height: 36px;
+  margin-top: 20px;
+}
+
+h3 {
+  font-size: 24px;
+  line-height: 30px;
+  margin-top: 20px;
+}
+
+h4 {
+  font-size: 18px;
+  line-height: 24px;
+  margin-top: 10px;
+}
+
+h5 {
+  font-size: 14px;
+  line-height: 20px;
+  margin-top: 10px;
+}
+
+h6 {
+  font-size: 12px;
+  line-height: 18px;
+  margin-top: 10px;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+// Конец
+
+// Контейнеры
+.w-container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 960px;
+}
+
+.w-container:before,
+.w-container:after {
+  content: " ";
+  display: table;
+  grid-column-start: 1;
+  grid-row-start: 1;
+  grid-column-end: 2;
+  grid-row-end: 2;
+}
+
+.w-container:after {
+  clear: both;
+}
+// Конец
+
+// Иконки лайков/дизлайков + счетчики
+.article_likes_counter {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-right: 10px;
+}
+
+.comments_icon {
+  margin-right: 5px;
+  border: 1px none transparent;
+  color: #000;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+.dislike_icon {
+  margin-right: 5px;
+}
+
+.article_dislike_counter {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+// Конец
+
+// Кнопки
+.btn_blue:hover {
+  background-color: @bgColorBtnBlue;
+  border-color: @bgColorBtnBlue;
+  color: @linkColorHover;
+  font-size: @sizeLink;
+}
+
+.btn_blue {
+  border-color: @bgColorBtnBlue;
+  color: @bgColorBtnBlue;
+  font-size: @sizeLink;
+}
+
+.btn_save:hover {
+  background-color: @bgColorBtnSave;
+  border-color: @bgColorBtnSave;
+  color: @linkColorHover;
+  font-size: @sizeLink;
+}
+
+.btn_save {
+  border-color: @bgColorBtnSave;
+  color: @bgColorBtnSave;
+  font-size: @sizeLink;
+}
+
+.btn_archive {
+  font-size: @sizeLink;
+  border-color: @bgColorBtnNeg;
+  color: @bgColorBtnNeg;
+}
+
+.btn_archive:hover {
+  font-size: @sizeLink;
+  background-color: @bgColorBtnNeg;
+  color: @linkColor;
+}
+// Конец
+
+// Таблицы
+.table_color {
+  background-color: @bgColorTable;
+}
+
+.table_post {
+  border: 1px solid @bgColorTable;
+}
+
+.table > :not(caption) > * > * {
+  padding: 0.1rem 0.5rem;
+}
+
+.table p {
+  margin: 0;
+}
+
+.table tr {
+  margin: 0;
+}
+// Конец
+
+// Сообщение от модератора
+.msg_of_moder {
+  background-color: white;
+}
+// Конец

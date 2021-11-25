@@ -1,0 +1,81 @@
+@sizeLink: 14px;
+@bgColorBtnHover: #60bef5;
+@bgColorBtnSave: #6cbc75;
+@bgColorBtnNeg: #dc3444;
+@bgColorTable: #6cbc7547;
+@linkColor: white;
+@linkColorHover: black;
+@subscriberImageSize: 50px;
+
+.btn-outline-delete {
+  color: @bgColorBtnNeg;
+  border-color: @bgColorBtnNeg;
+}
+
+.d-flex.flex-wrap > a {
+  font-size: @sizeLink;
+}
+
+.h5 {
+  margin: 0;
+}
+
+.col-6 {
+    width: 45%;
+}
+
+.subscribes_block {
+  max-height: 300px;
+  overflow-scrolling: auto;
+  overflow-y: scroll;
+
+  .subscribe_block {
+
+    .image_block {
+      max-width: @subscriberImageSize;
+      max-height: @subscriberImageSize;
+    }
+
+    .info_block {
+
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+#audio_block, .audio {
+    height: 38px;
+
+}
+
+#audio_block {
+    width: 70%;
+}
+
+#regenerate_audio {
+    margin-bottom: 10px;
+    border: 1px solid #6cbc75;
+    border-radius: 0px;
+    background-color: #fff;
+    -webkit-transition: background-color 500ms ease;
+    transition: background-color 500ms ease;
+    color: #6cbc75;
+}
+
+#regenerate_audio:hover {
+    background-color: #6cbc75;
+    color: black;
+}

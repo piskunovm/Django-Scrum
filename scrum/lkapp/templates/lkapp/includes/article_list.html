@@ -1,0 +1,51 @@
+{% load static %}
+
+
+{% for article in articles %}
+<div style="word-break: break-word;" class="d-flex flex-column table_post shadow rounded mb-3 p-2 table-responsive">
+
+    <!-- Таблица -->
+    <table class="table table-borderless mb-0" style="font-size: 12px;">
+        <tr>
+            <td class="d-flex align-items-center justify-content-between" style="font-weight: bold;">
+                <div class="d-flex flex-wrap">
+                    <img class="me-3" src="{% static 'vendor/img_for_alerts/file-post.svg' %}" alt="Иконка"
+                        width="23" height="23">
+                    <p class="me-2">{{ article.updated_at }}</p>
+                    <p class="text-capitalize me-2">{{ article.category }}</p>
+                </div>
+                <div class="d-flex flex-wrap">
+                    <p class="text-capitalize me-2">{{ article.status }}</p>
+                </div>
+            </td>
+            <td class="d-flex flex-column flex-wrap mb-2">
+                {% if article.status == "published" %}
+                <a href="{% url 'mainapp:read_post' article.id %}" style="text-decoration: none; color: #000;">
+                    <h5>{{ article.title }}</h5>
+                </a>
+                {% else %}
+                <h5>{{ article.title }}</h5>
+                {% endif %}
+                <p>{{ article.preview }}</p>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Сообщение от модератора -->
+    {% if article.status == "correction" %}
+    <div class="msg_of_moder m-3 p-3 border shadow rounded border-danger">
+        <h6>
+            Сообщение от модератора:
+        </h6>
+        <p>
+            {{ article.comment_moderator }}
+        </p>
+    </div>
+    {% endif %}
+
+    <!-- Кнопки -->
+    {% block btns_posts %}
+    {% include 'lkapp/includes/btns_for_posts.html' %}
+    {% endblock %}
+</div>
+{% endfor %}

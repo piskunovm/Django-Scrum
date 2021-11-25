@@ -1,0 +1,18 @@
+.btn_blue,
+.btn_archive,
+.btn_blue:hover,
+.btn_archive:hover {
+  font-size: 12px;
+}
+.table .nav-link {
+  padding: 0;
+}
+.table .nav-link > p {
+  margin-left: 5px;
+}
+.table_alerts {
+  border: 1px solid #d1e8d4;
+}
+td {
+  margin-top: 10px;
+}

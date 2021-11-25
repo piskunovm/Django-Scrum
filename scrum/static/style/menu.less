@@ -1,0 +1,42 @@
+@bgIMG: linear-gradient(122deg, #03a9f4bd, #4caf50d4);
+@bgColorBtnBlue: #60bef5;
+@linkColor: white;
+@linkColorHover: black;
+
+.header_lk {
+    background-image: @bgIMG;
+}
+
+.menu_btn:hover {
+    color: @linkColorHover;
+}
+
+.menu_welcome:hover {
+    color: @linkColorHover;
+}
+
+.menu_welcome {
+    font-size: 20px;
+}
+
+.menu_filters:hover {
+    color: @linkColorHover;
+}
+
+.active {
+    background-color: @bgColorBtnBlue;
+    color: @linkColor;
+}
+
+.active > a {
+    color: @linkColor;
+}
+
+.active_filters {
+    background-color: white;
+    color: @linkColorHover;
+}
+
+.menu_3_lvl {
+    background-image: @bgIMG;
+}

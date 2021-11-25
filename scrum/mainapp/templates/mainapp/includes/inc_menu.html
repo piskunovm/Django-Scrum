@@ -1,0 +1,182 @@
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'style/menu.css' %}">
+{% endblock %}
+
+<div class="d-flex menu w-100 justify-content-between m-auto mt-3 p-3 mb-5"
+     style="max-width: max-content"></div>
+<div style="height: 48px;"></div>
+
+
+<div class="fixed-top d-flex menu bg-light w-100 justify-content-between m-auto mt-3 shadow p-3 mb-5 bg-white rounded"
+     style="max-width: 960px">
+    <div class="hubs">
+        <ul class="nav flex-fill justify-content-start">
+            <li class="nav-item p-2 {% if request.resolver_match.url_name == 'index' %} active shadow rounded {% endif %}">
+                <a href="/"
+                   class="nav-link p-1 link-secondary menu_btn">
+                    Главная
+                </a>
+            </li>
+
+            {% for category in categories %}
+                <li class="nav-item p-2 {% if category.slug in request.path %} active shadow rounded {% endif %}">
+                    <a class="nav-link p-1 text-capitalize link-secondary menu_btn"
+                       href="{% url 'main:category' category.slug %}">
+                        {{ category.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+    {% if user.is_authenticated %}
+    <div class="lk">
+        <ul class="nav flex-fill justify-content-end">
+        <style>
+            .icon-badge-container {
+                position: relative;
+            }
+
+            .icon-badge {
+                background-color: red;
+                font-size: 12px;
+                color: white;
+                text-align: center;
+                width: 20px;
+                height: 20px;
+                border-radius: 35%;
+                position: absolute;
+                top: -5px;
+                left: 18px;
+            }
+        </style>
+        <li class="nav-item p-2">
+            <div class="icon-badge-container" id = "search_press_auth">
+                <a class="nav-link p-1 text-end link-dark menu_btn"
+                   href="##">
+                    <img src="{% static '/vendor/img_for_menu/search.png' %}"
+                         alt="Поиск" width="20" height="20">
+                </a>
+            </div>
+        </li>
+        <li class="nav-item p-2">
+            <div class="icon-badge-container">
+                <a class="nav-link p-1 text-end link-secondary menu_btn"
+
+                   href="{% url 'my_lk:my_alerts' %}">
+                    <img src="{% static '/vendor/img_for_menu/bell.svg' %}"
+                         alt="Оповещения" width="20" height="20">
+                    {% if alert > 0 %}
+                        <div class="icon-badge">{{ alert }}</div>
+                    {% endif %}
+                </a>
+            </div>
+        </li>
+        <li class="nav-item p-2">
+            <a class="nav-link p-1 text-end link-secondary menu_btn"
+               href="{% url 'my_lk:my_profile' user.id %}">
+                <img src="{% static '/vendor/img_for_menu/person-circle.svg' %}"
+                     alt="Личный кабинет" width="20"
+                     height="20"> {{ user.username }}
+            </a>
+        </li>
+        <li class="nav-item p-2">
+            <a class="nav-link p-1 text-end" href="{% url 'auth:logout' %}">
+                <img src="{% static '/vendor/img_for_menu/door-closed-fill.svg' %}"
+                     alt="Выйти" width="20"
+                     height="20">
+            </a>
+        </li>
+    {% else %}
+        <div class="lk">
+        <ul class="nav flex-fill justify-content-end">
+            <li class="nav-item p-2">
+                <div class="icon-badge-container" id = "search_press_notauth">
+                    <a class="nav-link p-1 text-end link-dark menu_btn"
+                       href="##">
+                        <img src="{% static '/vendor/img_for_menu/search.png' %}"
+                             alt="Поиск" width="20" height="20">
+                    </a>
+                </div>
+            </li>
+            <li class="nav-item p-2 align-middle">
+                <a class="nav-link p-1 text-end" href="{% url 'auth:login' %}">
+                    <img src="{% static '/vendor/img_for_menu/door-open.svg' %}"
+                         alt="Войти" width="20"
+                         height="20">
+                </a>
+            </li>
+            <li class="nav-item p-2 align-middle">
+                <a class="nav-link p-1 text-end"
+                   href="{% url 'auth:register' %}">
+                    <img src="{% static '/vendor/img_for_menu/person-plus.svg' %}"
+                         alt="Регистрация" width="20"
+                         height="20">
+                </a>
+            </li>
+        </ul>
+    {% endif %}
+    </div>
+    </div>
+
+    <div id = "hide_search" style="display: none">
+    <div class="fixed-top d-flex menu bg-light w-200 justify-content-between m-auto mt-3 shadow p-3 mb-5 bg-white rounded"
+    style="max-width: 370px; top: 72px; left: 590px;">    
+        <div>            
+            <input type="text" size="40" id = "search_line_text">
+            <a class="link-dark menu_btn" id = "press_search_start" href="##"><img src="{% static '/vendor/img_for_menu/search.png' %}" alt="Поиск" width="20" height="20"></a>
+            <a class="link-dark menu_btn" id = "press_search_cancel" href="##"><img src="{% static '/vendor/img_for_menu/cancel_search.png' %}" alt="Поиск" width="20" height="20"></a>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+{% block javascript %}
+<script>
+    $("#press_search_cancel").click(function () {
+        $('#hide_search')[0].style.removeProperty("display: table-row;");
+        $('#hide_search')[0].style.setProperty("display", "none");       
+    });
+
+    var elems = $("[id^='search_press']")
+    elems.on("click", function () {
+        console.log ($('#hide_search')[0].style.display)
+        if ($('#hide_search')[0].style.display == 'none')
+        {
+            $('#hide_search')[0].style.removeProperty("display: none");
+            $('#hide_search')[0].style.setProperty("display", "table-row");         
+        }
+        else{
+            $('#hide_search')[0].style.removeProperty("display: table-row;");
+            $('#hide_search')[0].style.setProperty("display", "none");              
+        }
+    });      
+    
+    $('#search_line_text').keypress(function (e) {
+        if (event.key === "Enter") {
+            var value = document.getElementById('search_line_text').value
+            var url = '/search/?search_request=' + value
+            window.location.href = url;       
+        }
+    });      
+
+    $(document).keyup(function(e) {
+        if (e.key === "Escape") { // escape key maps to keycode `27`
+            $('#hide_search')[0].style.removeProperty("display: table-row;");
+            $('#hide_search')[0].style.setProperty("display", "none");     
+       }
+   });    
+      
+    $('#press_search_start').click(function () {
+        var value = document.getElementById('search_line_text').value
+        var url = '/search/?search_request=' + value
+        window.location.href = url;       
+    });    
+
+</script>
+{% endblock javascript %}

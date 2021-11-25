@@ -1,0 +1,19 @@
+<div class="menu_3_lvl bg-secondary shadow rounded p-3 mt-5 mb-5">
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link link-light menu_filters complains
+            {% if 'complains' in request.path %} active_filters shadow rounded {% endif %}"
+            href="##" id = 'filtercomplain' name = 'complains'>Все</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-light menu_filters complain_posts
+            {% if request.resolver_match.url_name == 'complain_posts' %} active_filters shadow rounded {% endif %}"
+            href="##" id = 'filtercomplain' name = 'complain_posts' >Посты</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-light menu_filters complains_comments
+            {% if request.resolver_match.url_name == 'complains_comments' %} active_filters shadow rounded {% endif %}"
+            href="##" id = 'filtercomplain' name = 'complains_comments'>Комментарии</a>
+        </li>
+    </ul>
+</div>

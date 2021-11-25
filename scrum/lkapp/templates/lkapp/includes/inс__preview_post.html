@@ -1,0 +1,23 @@
+{% load static %}
+
+
+<div class="container article_card blog-article w-container shadow p-3 bg-white rounded" style="margin: 20px auto 0 auto; max-width: 960px;">
+     <h2 class=" article_h2 blog-article-title">Превью статьи</h2>
+     <div>
+          {% if not article.image %}
+          <img class="article_image shadow bg-white rounded mw-100" src="{% static 'vendor/img/no_foto.jpg' %}" alt="Изображение статьи">
+          {% endif %}
+          {% if article.image %}
+          <img class="article_image shadow bg-white rounded mw-100" src="{{ media_url }}{{ article.image }}" alt="Изображение статьи">
+          {% endif %}
+          <br><br>
+          <p class="article_body">{{ article.preview }}</p>
+     </div>
+
+</div>
+<div class="container article_card blog-article container-3 w-container shadow p-3 bg-white rounded" style="margin: 20px auto 0 auto; max-width: 960px;">
+     <h2 class=" article_h2 blog-article-title">Тело статьи</h2>
+     <div class="article_body preview">{{ article.body|safe }}</div>
+</div>
+
+<script src="{% static 'js/add_img_tag.js' %}"></script>

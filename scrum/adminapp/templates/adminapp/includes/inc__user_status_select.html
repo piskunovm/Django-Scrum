@@ -1,0 +1,57 @@
+<form action="#" method="post" class="user_status">
+    <div id="changeUserStatus-modal-{{ user.pk }}" class="modal " tabindex="-1"
+         role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <span class="status"></span> пользователя
+                    </h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-2">
+                        Вы действительно хотите
+                        <strong>
+                            <span class="status">
+
+                            </span>
+                        </strong> пользователя<br>
+                        <strong>
+                            <span class="text-capitalize">
+                                {{ user.first_name }} {{ user.last_name }}
+                            </span>
+                        </strong>?
+                    </p>
+                </div>
+                <div class="modal-footer" id="changeUserStatus-{{ user.pk }}">
+                    <button type="button"
+                            class="btn btn-outline-success switchUserStatus"
+                            id="publish_post">
+                        Подтвердить
+                    </button>
+                    <button type="button"
+                            class="btn btn-outline-danger cancelSwitchUserStatus"
+                            data-bs-dismiss="modal">
+                        Отмена
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-around align-items-center form-check form-switch m-0 p-0">
+        <input class="form-check-input inputUserStatus m-0" type="checkbox" id="inputUserStatus-{{ user.pk }}"
+                {% if user.is_active == True %} checked {% endif %}
+                {% if user.is_superuser %}
+               disabled
+                {% elif current_user.id == user.id %}
+               disabled
+                {% elif user.user_role == 'administrator' and not current_user.is_superuser %}
+               disabled
+                {% endif %}
+        >
+    </div>
+</form>

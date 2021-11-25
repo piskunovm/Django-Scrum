@@ -1,0 +1,46 @@
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.forms import TextInput, EmailInput
+from django.forms.widgets import FileInput
+
+from .models import User
+
+
+class UserLoginForm(AuthenticationForm):
+    class Meta:
+        model = User
+        fields = ("username", "password")
+
+    def __init__(self, *args, **kwargs):
+        super(UserLoginForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs["class"] = "form-control"
+
+
+class UserRegisterForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = (
+            'username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'sex', 'age', 'avatar', "about_me"
+        )
+
+        widgets = {
+            'username': TextInput(attrs={'placeholder': 'user123'}),
+            'email': EmailInput(attrs={'placeholder': 'example@domain.com'}),
+            'first_name': TextInput(attrs={'placeholder': 'Иван'}),
+            'last_name': TextInput(attrs={'placeholder': 'Иванов'}),
+            'avatar': FileInput(attrs={'placeholder': 'Аватар'}),
+            'about_me': TextInput(attrs={'placeholder': 'Программист'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = "Имя пользователя"
+        self.fields['password1'].label = "Пароль"
+        self.fields['password2'].label = "Введите пароль еще раз"
+        self.fields['email'].label = "Почтовый адрес"
+        self.fields['first_name'].label = "Имя"
+        self.fields['last_name'].label = "Фамилия"
+        self.fields['avatar'].label = "Аватар"
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = f'form-control {field_name}'
+            field.help_text = ''

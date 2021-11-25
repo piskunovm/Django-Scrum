@@ -1,0 +1,409 @@
+{% extends 'mainapp/base.html' %} {% load static %} {% block css %}
+    <link href="{% static 'css/author_page.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/lkapp.css' %}"/>
+{% endblock %} {% block content %}
+    <div class="container-2 w-container mb-5" style="margin-left: auto; margin-right: auto; max-width: 960px">
+    <div class="navbar header_lk flex-column navbar-dark bg-secondary" style="border-radius: 0.25rem 0.25rem 0 0">
+        <div class="avatar m-auto d-flex flex-column" style="max-width: 200px">
+            {% if not author_user.avatar %}
+                <img class="shadow mw-100 rounded-circle m-auto" src="{% static 'vendor/profile_avatar/default.jpg' %}"
+                     alt="Avatar"/>
+            {% endif %} {% if author_user.avatar %}
+            <img class="shadow mw-100 rounded-circle m-auto" src="{{ media_url }}{{ author_user.avatar }}"
+                 alt="Avatar"/>
+        {% endif %}
+        </div>
+    </div>
+    <div class="d-flex flex-column justify-content-center bg-light shadow mb-5"
+         style="border-radius: 0 0 0.25rem 0.25rem; min-height: 48px">
+        <div class="d-flex">
+            <table class="table table-borderless mb-0">
+                <tbody class="row align-items-center justify-content-center">
+                <tr class="col-auto h5">
+                    <th>
+                        <p>Подписчиков:</p>
+                    </th>
+                    <td>
+                        <p class="text-capitalize">{{ subscribers }}</p>
+                    </td>
+                </tr>
+                <tr class="col-auto h5">
+                    <th>
+                        <p>Постов:</p>
+                    </th>
+                    <td>
+                        <p>{{ count_of_posts }}</p>
+                    </td>
+                </tr>
+                <tr class="col-auto">
+                    <td>
+                        <a href="##" {% if not user.is_authenticated %} class="disabled" {% endif %}
+                           style="text-decoration: none; color: #000 !important">
+                            <div class="article_likes_counter" id="likes_counter">
+                                <div class="comments_icon" id="img_like_icon">
+                                    <svg {% if author_liked %} fill="green" {% else %} fill="black" {% endif %}
+                                                               xmlns="http://www.w3.org/2000/svg" width="20" height="24"
+                                                               class="bi bi-heart" viewBox="0 0 16 16"
+                                                               id="like_icon_color">
+                                        <path
+                                                d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                    </svg>
+                                </div>
+                                <div id="id_like_count" class="h5">
+                                    {{ count_likes }}
+                                </div>
+                            </div>
+                        </a>
+                    </td>
+                </tr>
+                <tr class="col-auto">
+                    <td>
+                        <a href="##" {% if not user.is_authenticated %} class="disabled" {% endif %}
+                           style="text-decoration: none; color: #000 !important">
+                            <div class="article_dislike_counter">
+                                <div class="dislike_icon" id="img_dislike_icon">
+                                    <svg {% if author_disliked %} fill="red" {% else %} fill="black" {% endif %}
+                                                                  xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                  height="24"
+                                                                  class="bi bi-emoji-frown" viewBox="0 0 16 16"
+                                                                  id="dislike_icon_color">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path
+                                                d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.498 3.498 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.498 4.498 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+                                    </svg>
+                                </div>
+                                <div id="id_dislike_count" class="h5">
+                                    {{ count_dislike }}
+                                </div>
+                            </div>
+                        </a>
+                    </td>
+                </tr>
+                {% if author_user != user and user.is_authenticated %}
+                    <tr class="col-auto" style="align-items: center">
+                        <td>
+                            {% if button_to_stop_following %}
+                                <a class="btn btn-sm btn_archive h5 my-auto" style="width: 126px !important"
+                                   href="{% url 'main:follow' author_user.id %}" role="button">Отписаться</a>
+                            {% else %}
+                                <a class="btn btn-sm btn_blue h5 my-auto" style="width: 126px !important"
+                                   href="{% url 'main:follow' author_user.id %}" role="button">Подписаться</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                <!-- Если это не собственная страница -->
+                {% if author_user != user and user.is_authenticated %}
+                    <!-- Если пользователь с ролью модератор -->
+                    {% if user.user_role == "moderator" or user.user_role == "administrator" %}
+                        <!-- Если страница не модератора -->
+                        {% if author_user.user_role != "moderator" or author_user.user_role != "administrator" %}
+                            <tr class="col-auto" style="align-items: center">
+                                {% if ban %}
+                                    <td>
+                                        <a class="btn btn-sm btn_save h5 my-auto" style="width: 126px !important"
+                                           href="{% url 'main:set_user_unban_status' author_user.id %}" role="button">Снять
+                                            БАН</a>
+                                    </td>
+                                {% else %}
+                                    <td>
+                                        {% include 'mainapp/includes/inc__ban.html' %}
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="
+      d-flex
+      flex-column
+      justify-content-center
+      bg-light
+      shadow
+      rounded
+      mb-5
+      p-5
+    ">
+        <div class="d-flex flex-wrap mb-5 justify-content-between">
+            <div class="d-flex">
+                <h4 class="d-flex align-items-center">Профиль автора</h4>
+                {% include 'lkapp/includes/inc_author_rate.html' %}
+            </div>
+            <div class="d-flex">
+                <p class="d-flex align-items-center">Роль пользователя:</p>
+                {% if author_user.user_role == "moderator" %}
+                    <p class="d-flex align-items-center text-capitalize text-primary ms-1 text-warning">
+                        {{ author_user.user_role }}
+                    </p>
+                {% endif %} {% if author_user.user_role == "user" %}
+                <p class="d-flex align-items-center text-capitalize text-dark ms-1 text-center">
+                    {{ author_user.user_role }}
+                </p>
+            {% endif %} {% if author_user.user_role == "administrator" %}
+                <p class="d-flex align-items-center text-capitalize text-primary ms-1 text-center">
+                    {{ author_user.user_role }}
+                </p>
+            {% endif %}
+            </div>
+        </div>
+
+        <!-- администратор видит баны пользователей -->
+        {% if ban %}
+            {% if user.user_role == "moderator" or user.user_role == "administrator" %}
+                <div class="mb-5 col-8">
+                    <p class="h5 mb-3">БАН</p>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th scope="row">
+                                    <p>Причина:</p>
+                                </th>
+                                <td>
+                                    <p class="text-capitalize">{{ ban_info.reason }}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <p>Комментарий модератора:</p>
+                                </th>
+                                <td>
+                                    <p>{{ ban_info.moderator_comment }}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <p>Время окончания бана:</p>
+                                </th>
+                                <td>
+                                    <p>{{ ban_time }}</p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% elif user == author_user %}
+                <!-- Пользователь видит свой бан -->
+                <div class="mb-5 col-8">
+                    <p class="h5 mb-3">БАН</p>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th scope="row">
+                                    <p>Причина:</p>
+                                </th>
+                                <td>
+                                    <p class="text-capitalize">{{ ban_info.reason }}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <p>Комментарий модератора:</p>
+                                </th>
+                                <td>
+                                    <p>{{ ban_info.moderator_comment }}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <p>Время окончания бана:</p>
+                                </th>
+                                <td>
+                                    <p>{{ ban_time }}</p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <div class="mb-5 col-8">
+            <p class="h6 mb-3">О пользователе:</p>
+            <div class="table-responsive">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th scope="row">
+                            <p>Имя:</p>
+                        </th>
+                        <td>
+                            <p class="text-capitalize">{{ author_user.first_name }}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <p>Фамилия:</p>
+                        </th>
+                        <td>
+                            <p class="text-capitalize">{{ author_user.last_name }}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <p>Псевдоним:</p>
+                        </th>
+                        <td>
+                            <p>{{ author_user.username }}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <p>Возраст:</p>
+                        </th>
+                        <td>
+                            <p>{{ author_user.age }}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <p>О себе:</p>
+                        </th>
+                        <td>
+                            <p>{{ author_user.about_me }}</p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="author_user-data justify-content-between d-flex">
+            <div class="mb-5">
+                <p class="h6">Статьи автора:</p>
+
+                {% if posts %} {% for post in posts %}
+
+                    <div style="word-break: break-word" class="
+            d-flex
+            flex-column
+            table_post
+            shadow
+            rounded
+            mb-3
+            p-2
+            table-responsive
+          ">
+                        <!-- Таблица -->
+                        <table class="table table-borderless mb-0" style="font-size: 12px">
+                            <tr>
+                                <td class="d-flex align-items-center justify-content-between" style="font-weight: bold">
+                                    <div class="d-flex flex-wrap">
+                                        <img class="me-3" src="{% static 'vendor/img_for_alerts/file-post.svg' %}"
+                                             alt="Иконка" width="23" height="23"/>
+                                        <p class="me-2">{{ post.updated_at }}</p>
+                                        <p class="text-capitalize me-2">{{ post.category }}</p>
+                                    </div>
+                                    <div class="d-flex flex-wrap">
+                                    </div>
+                                </td>
+                                <td class="d-flex flex-column flex-wrap mb-2">
+                                    <a href="{% url 'mainapp:read_post' post.id %}" class="post_name h6">
+                                        <h5>{{ post.title }}</h5>
+                                    </a>
+                                    <p>{{ post.preview }}</p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="author_post_like_dislike">
+                            <div class="like me-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-heart me-1" viewBox="0 0 16 16">
+                                    <path
+                                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                </svg>
+                                <div class="like_counter">{{ post.get_count_post_likes }}</div>
+                            </div>
+                            <div class="dislike align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-emoji-frown me-1" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path
+                                            d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.498 3.498 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.498 4.498 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+                                </svg>
+                                <div class="dislike_counter">{{ post.get_count_post_dislikes }}</div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %} {% else %}
+                    <p class="text-center mt-5">Автор еще не разместил постов!</p>
+                {% endif %}
+            </div>
+        </div>
+        <footer></footer>
+    </div>
+
+    {% block javascript %}
+        <script>
+
+            $("#img_like_icon").click(function () {
+                $.ajax({
+                    url: "{% url 'mainapp:like_author_ajax' author_user.id %}",
+                    // если успешно, то
+                    success: function (response) {
+                        $('#id_like_count').html(response.like_user_count)
+                        $('#id_dislike_count').html(response.dislike_user_count)
+                        if (response.author_liked) {
+                            $('#like_icon_color').attr("fill", "green")
+                            $('#dislike_icon_color').attr("fill", "black")
+                        } else if (response.author_disliked) {
+                            $('#like_icon_color').attr("fill", "black")
+                            $('#dislike_icon_color').attr("fill", "red")
+                            console.log('2')
+                        } else {
+                            $('#like_icon_color').attr("fill", "black")
+                            $('#dislike_icon_color').attr("fill", "black")
+                        }
+                    },
+                    // если ошибка, то
+                    error: function (response) {
+                        // предупредим об ошибке
+                        console.log(response.responseJSON.errors)
+                    }
+
+                })
+            });
+
+            $("#img_dislike_icon").click(function () {
+                $.ajax({
+                    url: "{% url 'mainapp:dislike_author_ajax' author_user.id %}",
+                    // если успешно, то
+                    success: function (response) {
+                        $('#id_like_count').html(response.like_user_count)
+                        $('#id_dislike_count').html(response.dislike_user_count)
+                        if (response.author_liked) {
+                            $('#like_icon_color').attr("fill", "green")
+                            $('#dislike_icon_color').attr("fill", "black")
+                        } else if (response.author_disliked) {
+                            $('#like_icon_color').attr("fill", "black")
+                            $('#dislike_icon_color').attr("fill", "red")
+                        } else {
+                            $('#like_icon_color').attr("fill", "black")
+                            $('#dislike_icon_color').attr("fill", "black")
+                        }
+
+                    },
+                    // если ошибка, то
+                    error: function (response) {
+                        // предупредим об ошибке
+                        console.log(response.responseJSON.errors)
+                    }
+
+                })
+            });
+
+
+        </script>
+
+    {% endblock javascript %}
+
+{% endblock content %}
+</div>

@@ -1,0 +1,89 @@
+{% load static %}
+
+<div id="publishPost" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Подтвердить пост</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2">
+                    Вы действительно хотите подтвердить пост?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-success"
+                        id="publish_post">
+                    Подтвердить
+                </button>
+                <button type="button" class="btn btn-outline-danger"
+                        data-bs-dismiss="modal">
+                    Отмена
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="correctionPost" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Отклонить пост</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2">
+                    Вы действительно хотите отправить пост на доработку?
+                </p>
+            </div>
+            <form action="javascript:handleCorrection()">
+                <div class="form-group col-md-10 mx-auto">
+                    <div class="form-group">
+                        <label for="correctionReason">
+                            Напишите причину:
+                        </label>
+                        <textarea class="form-control" id="correctionReason"
+                                  rows="8" placeholder="Комментарий"
+                                  required="required"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-outline-danger"
+                                id="correction_post">
+                            Отправить на доработку
+                        </button>
+                        <button type="button" class="btn btn-outline-success"
+                                data-bs-dismiss="modal">
+                            Отмена
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<form method="post"
+      class="post_moderation_preview mx-auto rounded justify-content-center">
+    <p id="post_pk" style="display: none">{{ post.pk }}</p>
+    <button type="button" class="btn btn-sm btn_save text-center shadow"
+            data-bs-toggle="modal" data-bs-target="#publishPost">
+        Одобрить пост
+    </button>
+    <button type="button" class="btn btn-sm btn-outline-danger btn_archive text-center shadow"
+            data-bs-toggle="modal" data-bs-target="#correctionPost">
+        Отправить на доработку
+    </button>
+
+</form>
+
+
+<script src="{% static 'js/set_article_status.js' %}"></script>
+
+

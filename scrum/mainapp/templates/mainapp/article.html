@@ -1,0 +1,324 @@
+<!-- Шаблон для страницы статьи. -->
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{% block css %}
+    <link href="{% static 'css/index.css' %}" rel="stylesheet">
+    <link href="{% static 'style/style_article.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/lkapp.css' %}"/>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container article_card blog-post container-3 w-container shadow p-3 mb-5 bg-white rounded">
+        <h1 class="article_h1 blog-post-title">{{ post.title }}</h1>
+        <h3 class="article_category text-capitalize">Категория: {{ post.category }}</h3>
+        <div class="author_article">
+
+            <a href="{% url 'mainapp:profile_page' post.author.id %}" class="nav-link link-dark d-flex m-0 p-0">
+                <h3 class="m-0 d-flex align-items-center pe-3">Автор: {{ post.author }}</h3>
+                <div class="d-flex p-2 px-0 pe-2" id="authorRate">
+                    {% if post.author.author_rating >= 0 and post.author.author_rating < 4 %}
+                        <p class="d-flex align-items-center bg-danger rounded-circle text-light shadow m-0"
+                           style="width: 36px; height: 36px;">
+                            <b class="col-12 rateAuthor" style="text-align: center">{{ post.author.author_rating }}</b>
+                        </p>
+                    {% endif %}
+                    {% if post.author.author_rating >= 4 and post.author.author_rating < 7 %}
+                        <p class="d-flex align-items-center bg-warning rounded-circle text-light shadow m-0"
+                           style="width: 36px; height: 36px;">
+                            <b class="col-12 rateAuthor" style="text-align: center">{{ post.author.author_rating }}</b>
+                        </p>
+                    {% endif %}
+                    {% if post.author.author_rating >= 7 %}
+                        <p class="d-flex align-items-center bg-success rounded-circle text-light shadow m-0"
+                           style="width: 36px; height: 36px;">
+                            <b class="col-12 rateAuthor" style="text-align: center">{{ post.author.author_rating }}</b>
+                        </p>
+                    {% endif %}
+                </div>
+            </a>
+            <p>Дата публикации: {{ post.published_at }}</p>
+            {% include 'mainapp/includes/inc__audio_block.html' %}
+            <p class="article_body">{{ post.body|safe }}</p>
+            <div class="article_comments_likes">
+                <div class="article_comments_counter">
+                    <div class="comments_icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-chat-square" viewBox="0 0 16 16">
+                            <path
+                                    d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                        </svg>
+                    </div>
+                    <div id='id_comment_count'>{{ post.comments_count }}</div>
+                </div>
+                <div class="article_likes_counter" id="likes_counter">
+                    <div class="comments_icon" id="img_like_icon">
+                        <a href="##">
+                            <svg {% if author_liked %} fill="green" {% else %} fill="black" {% endif %}
+                                                       xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                       class="bi bi-heart" viewBox="0 0 16 16" id="like_icon_color">
+                                <path
+                                        d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <div id='id_like_count'>{{ like_count }}</div>
+                </div>
+                <div class="article_dislike_counter">
+                    <div class="dislike_icon" id="img_dislike_icon">
+                        <a href="##">
+                            <svg {% if author_disliked %} fill="red" {% else %} fill="black" {% endif %}
+                                                          xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                          class="bi bi-emoji-frown" viewBox="0 0 16 16"
+                                                          id="dislike_icon_color">
+                                <path
+                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path
+                                        d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.498 3.498 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.498 4.498 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <div id='id_dislike_count'>{{ dislike_count }}</div>
+                </div>
+                {% include 'mainapp/includes/raiting_of_post.html' %}
+            </div>
+            {% if user.is_authenticated %}
+                {% if user.id != post.author.id %}
+                    <div>
+                        <a href="#" class="{% if ban %} disabled {% endif %} content_toggle btn btn-sm btn_archive text-center mt-3" role="button"
+                           style='font-size:12px;'>
+                            Пожаловаться
+                        </a>
+                    </div>
+                    <div class="content_block" style="display: none;">
+                        <!--            Здесь в поле action нужно будет передать урл типа {% url 'mainapp:profile_page' post.author.id %}-->
+                        <form method="post" id="complain_form" name="complain_form" data-name="Complain Form"
+                              style="margin-bottom: 10px;" class="complain_form"
+                              action="{% url 'mainapp:post_complaint' post.id %}">
+                            {% csrf_token %}
+                            {{ comment_form.media }}
+                            <div class="complain_form_block">
+                                <textarea class="complain_form" name="complain_text" placeholder="Ваша жалоба" cols="60"
+                                          rows="2" style='margin-top: 10px; font-size:12px;'></textarea>
+                                <div style='margin-top: 5px;'>
+                                    <input id="complain_button" type="submit" value="Отправить"
+                                           class="btn btn-sm btn_blue shadow-lg rounded" style='font-size:12px;'>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <script>
+                        $(document).ready(function () {
+                            $('.content_toggle').click(function () {
+                                $('.content_block').slideToggle(300);
+                                return false;
+                            });
+                        });
+                    </script>
+                {% endif %}
+            {% endif %}
+
+            {% if not user.is_authenticated %}
+                <p style="margin-top: 15px;">Пожалуйста <a href="/auth/login/">представьтесь</a>, чтобы поставить оценку
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container container-3 w-container article_card blog-post shadow p-3 mb-5 bg-white rounded">
+        <div class="comment_block">
+            {% if user.is_authenticated %}
+            {% if ban %}
+                <h4 class="send_comment_header">
+                    Возможность комментировать статьи и комментарии отключена во время бана!
+                </h4>
+            {% else %}
+                <div class="w-form">
+                    <h4 class="send_comment_header">
+                        Оставьте ваш комментарий
+                    </h4>
+                    <form method="post" name="wf-form-Comment-Form" data-name="Comment Form" class="comments_form">
+                        {% csrf_token %}
+                        {{ comment_form.media }}
+                        {{ comment_form|crispy }}
+                        <input id="send" type="button" value="Сохранить"
+                               class="btn_comment send_comment_button w-button shadow-lg rounded" name="{{ post.id }}">
+                    </form>
+                    <div class="w-form-done">
+                        <div>Ваш комментарий отправлен!</div>
+                    </div>
+                    <div class="w-form-fail">
+                        <div>Oops! Something went wrong while submitting the form.</div>
+                    </div>
+                </div>
+            {% endif %}
+            {% else %}
+                <h4 class="send_comment_header">
+                    Пожалуйста <a href="/auth/login/">представьтесь</a>, чтобы оставить комментарий
+                </h4>
+            {% endif %}
+        </div>
+    </div>
+
+
+
+    <div id="comments_form_full">
+        {% include 'mainapp/comment.html' %}
+    </div>
+
+
+    {% block javascript %}
+        <script>
+            $("#comments_form_full").click(function () {
+
+                if (event.target.tagName == "svg") {
+                    var id_data = event.target.parentElement.attributes.name.value
+                    var type = event.target.parentElement.className
+                    var text = ""
+                    $.ajax({
+                        url: "{% url 'main:like_dislike_comment' post.id %}",
+                        method: 'post',
+                        dataType: 'text',
+                        data: {id_dt: id_data, type: type, csrfmiddlewaretoken: "", comment_text: text},
+                        success: function (response) {
+                            $('#comments_form_full').empty();
+                            $('#comments_form_full').html(response);
+
+                        }
+                    });
+                } else if (event.target.tagName == "INPUT") {
+                    var id_data = event.target.attributes.name.value
+                    var text = $("#parenttext-" + id_data).val();
+                    var main_parent = event.target.getAttribute("main_parent:")
+                    var parent = event.target.getAttribute("parent:")
+                    $.ajax({
+                        url: "{% url 'mainapp:get_comment' post.id %}",
+                        method: 'post',
+                        dataType: 'text',
+                        data: {csrfmiddlewaretoken: "", comment_text: text, main_parent: main_parent, parent: parent},
+                        success: function (data) {
+                            $('#comments_form_full').empty();
+                            $('#comments_form_full').html(data);
+                        }
+                    });
+
+                    $.ajax({
+                        data: $(this).serialize(), // получаяем данные формы
+                        url: "{% url 'mainapp:comments_count' post.id %}",
+                        // если успешно, то
+                        success: function (response) {
+                            $('#id_comment_count').html(response.comments_count)
+                        },
+                        // если ошибка, то
+                        error: function (response) {
+                            // предупредим об ошибке
+                            console.log(response.responseJSON.errors)
+                        }
+
+                    })
+                }
+            });
+
+            $("#img_like_icon").click(function () {
+                $.ajax({
+                    data: $(this).serialize(), // получаяем данные формы
+                    url: "{% url 'mainapp:like_count' post.id %}",
+                    // если успешно, то
+                    success: function (response) {
+                        $('#id_like_count').html(response.like_count)
+                        $('#id_dislike_count').html(response.dislike_count)
+                        $('#id_rating_count').html(response.rating_count)
+                        if (response.author_liked) {
+                            $('#like_icon_color').attr("fill", "green")
+                            $('#dislike_icon_color').attr("fill", "black")
+                        } else if (response.author_disliked) {
+                            $('#like_icon_color').attr("fill", "black")
+                            $('#dislike_icon_color').attr("fill", "red")
+                        } else {
+                            $('#like_icon_color').attr("fill", "black")
+                            $('#dislike_icon_color').attr("fill", "black")
+                        }
+                    },
+                    // если ошибка, то
+                    error: function (response) {
+                        // предупредим об ошибке
+                        console.log(response.responseJSON.errors)
+                    }
+
+                })
+            });
+
+            $("#img_dislike_icon").click(function () {
+                $.ajax({
+                    data: $(this).serialize(), // получаяем данные формы
+                    url: "{% url 'mainapp:dislike_count' post.id %}",
+                    // если успешно, то
+                    success: function (response) {
+                        $('#id_like_count').html(response.like_count)
+                        $('#id_dislike_count').html(response.dislike_count)
+                        $('#id_rating_count').html(response.rating_count)
+                        if (response.author_liked) {
+                            $('#like_icon_color').attr("fill", "green")
+                            $('#dislike_icon_color').attr("fill", "black")
+                        } else if (response.author_disliked) {
+                            $('#like_icon_color').attr("fill", "black")
+                            $('#dislike_icon_color').attr("fill", "red")
+                        } else {
+                            $('#like_icon_color').attr("fill", "black")
+                            $('#dislike_icon_color').attr("fill", "black")
+                        }
+                    },
+                    // если ошибка, то
+                    error: function (response) {
+                        // предупредим об ошибке
+                        console.log(response.responseJSON.errors)
+                    }
+
+                })
+            });
+
+            $('#send').click(function () {
+                CKEDITOR.instances["id_comment_text"].updateElement();
+                var value = CKEDITOR.instances["id_comment_text"].getData();
+                var id_data = event.target.attributes.name.value
+
+                $.ajax({
+                    url: "{% url 'mainapp:get_comment' post.id %}",
+                    method: 'post',
+                    dataType: 'text',
+                    data: {csrfmiddlewaretoken: "", comment_text: value, id_data: id_data},
+                    success: function (data) {
+                        $('#comments_form_full').empty();
+                        $('#comments_form_full').html(data);
+                    }
+                });
+
+                $.ajax({
+                    data: $(this).serialize(), // получаяем данные формы
+                    url: "{% url 'mainapp:comments_count' post.id %}",
+                    // если успешно, то
+                    success: function (response) {
+                        $('#id_comment_count').html(response.comments_count)
+                    },
+                    // если ошибка, то
+                    error: function (response) {
+                        // предупредим об ошибке
+                        console.log(response.responseJSON.errors)
+                    }
+
+                })
+                CKEDITOR.instances["id_comment_text"].setData('');
+            });
+        </script>
+        {#        <script src="{% static 'js/dislike_postajax.js' %}"></script>#}
+        <script src="{% static 'js/comment.js' %}"></script>
+        <script src="{% static 'js/add_img_tag.js' %}"></script>
+        <script src="{% static 'js/rounding_rate.js' %}" defer></script>
+
+    {% endblock javascript %}
+
+{% endblock content %}

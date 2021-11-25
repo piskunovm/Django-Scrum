@@ -1,0 +1,81 @@
+{% load static %}
+
+<div class="infinite-container article_list">
+    {% for post in posts %}
+    <div class="infinite-item article_card shadow p-3 mb-5 bg-white rounded" id="{{ post.id }}">
+        <div class="article_info">
+            <div class="d-flex p-2 px-0 pe-2" id="authorRate">
+                {% if post.author.author_rating >= 0 and post.author.author_rating < 4 %}
+                <p class="d-flex align-items-center bg-danger rounded-circle text-light shadow m-0"
+                   style="width: 36px; height: 36px;">
+                    <b class="col-12 rateAuthor" style="text-align: center">{{ post.author.author_rating }}</b>
+                </p>
+                {% endif %}
+                {% if post.author.author_rating >= 4 and post.author.author_rating < 7 %}
+                <p class="d-flex align-items-center bg-warning rounded-circle text-light shadow m-0"
+                   style="width: 36px; height: 36px;">
+                    <b class="col-12 rateAuthor" style="text-align: center">{{ post.author.author_rating }}</b>
+                </p>
+                {% endif %}
+                {% if post.author.author_rating >= 7 %}
+                <p class="d-flex align-items-center bg-success rounded-circle text-light shadow m-0"
+                   style="width: 36px; height: 36px;">
+                    <b class="col-12 rateAuthor" style="text-align: center">{{ post.author.author_rating }}</b>
+                </p>
+                {% endif %}
+            </div>
+            <a href="{% url 'mainapp:profile_page' post.author.id %}"
+               class="article_user d-flex align-items-center">
+                {{ post.author }}
+            </a>
+            <p class="article_creation_data d-flex align-items-center m-0">
+                {{ post.published_at }}
+            </p>
+        </div>
+        <div class="article_chapters">
+            <a href="{% url 'main:category' post.category.slug %}"
+               class="article_chapter_link text-capitalize">{{ post.category }}
+            </a>
+        </div>
+        <img src="{{ media_url }}{{ post.image }}" loading="lazy"
+             class="article_image shadow bg-white rounded mx-auto d-block">
+        <a href="{% url 'mainapp:read_post' post.id %}" class="article_heading">
+            {{ post.title }}
+        </a>
+        <p class="article_text">
+            {{ post.preview }}
+        </p>
+        <a href="{% url 'mainapp:read_post' post.id %}" class="article_button w-button shadow rounded">
+            Читать полностью
+        </a>
+        {% include 'mainapp/includes/likes_comments_counter.html' %}
+    </div>
+    {% endfor %}
+</div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item {% if not posts.has_previous %} disabled {% endif %}">
+            <a class="page-link link_page"
+               href="{% if posts.has_previous %} ?page={{ posts.previous_page_number }} {% endif %}"
+               tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+        {% for page in posts.paginator.page_range %}
+            <li class="page-item">
+                <a class="page-link link_page" href="?page={{ page }}" id="page_link">
+                    {{ page }}</a>
+            </li>
+        {% endfor %}
+        <li class="page-item {% if not posts.has_next %} disabled {% endif %}">
+            <a class="page-link link_page"
+               href="{% if posts.has_next %} ?page={{ posts.next_page_number }} {% endif %}">
+                Next</a>
+        </li>
+    </ul>
+</nav>
+
+<!--<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>-->
+<!--<script src="{% static 'js/infinite.min.js' %}"></script>-->
+<!--<script src="{% static 'js/article_tape.js' %}"></script>-->
+<script src="{% static 'js/current_page.js' %}"></script>
+<script src="{% static 'js/rounding_rate.js' %}" defer></script>

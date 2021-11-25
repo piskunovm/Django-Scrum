@@ -1,0 +1,83 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/lkapp.css' %}" />
+{% endblock %}
+
+{% block user_menu %}
+{% include 'lkapp/includes/inc__lk_menu.html' %}
+{% endblock %}
+
+{% block content %}
+<!-- Основной блок -->
+<div class="container-2 w-container mt-5 mb-5" style="margin-left: auto; margin-right: auto; max-width: 960px;">
+    <div class="d-block bg-light shadow rounded mb-5 p-5">
+        <!-- Заголовок вкладки -->
+        <h4 class="d-block mb-5">Мои черновики</h4>
+        <div class="btns d-flex flex-wrap mt-3 justify-content-between mb-5" style="padding: 0;">
+            <div class="d-flex flex-wrap">
+                <a class="{% if ban %} disabled {% endif %} btn btn-sm btn-outline-dark me-2 p-1 btn_blue text-center shadow {% if request.path == '/my_lk/post/create/' %} active {% endif %}"
+                    href="{% url 'my_lk:post_creation' %}" role="button"> Новый черновик
+                </a>
+            </div>
+        </div>
+        <!-- Блок с черновиками -->
+        {% for draft in drafts %}
+        <div style="word-break: break-word;" class="d-flex flex-column table_post shadow rounded mb-3 p-2 table-responsive">
+            
+            <!-- Таблица -->
+            <table class="table table-borderless mb-0" style="font-size: 12px;">
+                <tr>
+                    <td class="d-flex align-items-center" style="font-weight: bold;">
+                        <img class="me-3" src="{% static 'vendor/img_for_alerts/file-post.svg' %}" alt="Иконка" width="23"
+                            height="23">
+                        <p class="me-2">{{ draft.updated_at }}</p>
+                        <p class="text-capitalize me-2">{{ draft.category }}</p>
+                    </td>
+                    <td class="d-flex flex-column flex-wrap mb-2">
+                        <h5>{{ draft.title }}</h5>
+                        <p>{{ draft.preview }}</p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Блок с кнопками -->
+            <div class="btns_drafts d-flex justify-content-between m-2 mb-0">
+                <div class="positive_btns">
+                    <a href="{% url 'my_lk:go_on_moderation_post' draft.id %}"
+                        class="{% if ban %} disabled {% endif %} btn btn-sm shadow btn_blue text-center" role="button">
+                        <div class="btns_hover">
+                            <p class="m-0">Опубликовать</p>
+                        </div>
+                    </a>
+                    <a href="{% url 'lkapp:edit_draft' draft.id %}" class="btn btn-sm shadow btn_blue text-center"
+                        role="button">
+                        <div class="btns_hover">
+                            <p class="m-0">Редактировать</p>
+                        </div>
+                    </a>
+                    <a href="{% url 'my_lk:read_draft' draft.id %}" class="btn btn-sm shadow btn_blue text-center"
+                        role="button">
+                        <div class="btns_hover">
+                            <p class="m-0">Предпросмотр</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="negative_btns">
+                    <a href="{% url 'my_lk:delete_drafts' draft.id %}" class="btn btn-sm btn_archive shadow text-center"
+                        role="button">
+                        <div class="btns_hover">
+                            <p class="m-0">Удалить</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

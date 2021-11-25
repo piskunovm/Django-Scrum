@@ -1,0 +1,12 @@
+<h4 class="not_found text-center">
+    {% if filter == 'posts' %}
+        Посты
+    {% elif filter == 'comments' %}
+        Комментарии
+    {% elif filter == 'users' %}
+        Пользователи
+    {% else %}
+        Посты
+    {% endif %}
+    не найдены. Попробуйте уточнить поиск.
+</h4>

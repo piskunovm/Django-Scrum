@@ -1,0 +1,17 @@
+django==3.2.7
+Pillow==8.3.2
+django-autoslug==1.9.8
+crispy-bootstrap5==0.6
+django-crispy-forms==1.13.0
+django-ckeditor==6.1.0
+django-el-pagination==3.3.0
+pytils==0.3
+gTTS==2.2.3
+django-post_office==3.5.3
+psycopg2==2.9.2
+asgiref~=3.4.1
+pyttsx3==2.90
+social-auth-app-django
+tzdata==2021.5
+tzlocal==4.1
+pytz==2021.3

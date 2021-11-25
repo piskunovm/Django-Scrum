@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {% block title %}
+            {{ title|title }}
+        {% endblock %}
+    </title>
+    {% block css %}
+        <link rel="stylesheet" type="text/css" href="../../../static/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="../../../static/css/admin_style.css"/>
+    {% endblock %}
+</head>
+
+<body class="container-fluid col-md-12" style="height: 100%;">
+<header class="navbar mt-3 navbar-dark bg-dark " style="border-radius: 0.25rem 0.25rem 0 0;">
+    <div class="d-flex justify-content-between text-white text-decoration-none col-md-2">
+        <a class=""
+           href="{% url 'main:index' %}">
+            <button class="target_button target_button_green w-button shadow rounded mx-2" type="button">
+                На главную
+            </button>
+        </a>
+        <a class="l"
+           href="{% url 'my_lk:my_profile' user.id %}">
+            <button class="target_button target_button_green w-button shadow rounded mx-2" type="button">
+                Мой профиль
+            </button>
+        </a>
+    </div>
+    <a class="navbar-brand my-1 mx-auto" href="{% url 'my_admin:get_users' %}">Управление порталом</a>
+</header>
+<main class="row mx-auto">
+    <div class="d-flex flex-column flex-shrink-0 p-2 pt-0 text-white bg-dark col-md-2"
+         style="border-radius: 0 0 0.25rem 0.25rem;">
+        <hr class="m-0">
+        <span class="fs-4 m-auto mt-0 mb-0">Панель меню</span>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto ">
+            <li class="nav-item flex-fill d-flex justify-content-between admin_main_menu">
+                <a href="{% url 'my_admin:get_users' %}" style="font-size: 14px;"
+                   class="target_button target_button_blue menu_button w-button shadow rounded me-2
+                        {% if request.path == '/my_admin/users/' %} active {% else %} text-white {% endif %}">
+                    Пользователи
+                </a>
+                <a href="{% url 'adminapp:create_user' %}"
+                   class="target_button target_button_blue target_icon w-button shadow rounded">
+                    <img src="{% static '/vendor/img_for_admin/icon_add_user.png' %}" height="20px"
+                         alt="Добавить пользователя" class="">
+                </a>
+            </li>
+        </ul>
+
+    </div>
+    <div class="col-md-10 text-center admin-main-block">
+        {% block main %}
+
+        {% endblock %}
+    </div>
+</main>
+<!-- <footer class="footer mt-auto py-3 bg-light">
+</footer> -->
+</body>
+{% block js %}
+    <script src="/static/js/bootstrap.js"></script>
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+</html>

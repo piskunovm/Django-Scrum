@@ -1,0 +1,57 @@
+<!-- Шаблон для страницы статьи. -->
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/lkapp.css' %}"/>
+<!-- <link href="{% static 'css/index.css' %}" rel="stylesheet">#} -->
+<link href="{% static 'style/style_article.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block user_menu %}
+{% include 'lkapp/includes/inc__lk_menu.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="container-2 w-container mt-5 mb-5 p-5 shadow bg-white rounded"
+     style="margin-left: auto; margin-right: auto; max-width: 960px;">
+    <h4 class="d-block mb-5">Жалоба</h4>
+
+    {% if complain.comment is None %}
+    <a class="nav-link link-dark p-0" href="{% url 'mainapp:read_post' complain.article.id %}">
+        <h4 class=" article_h1 blog-article-title">Статья - {{ complain.article.title }}</h4>
+    </a>
+    {% else %}
+    <a class="nav-link link-dark p-0" href="{% url 'mainapp:read_post' complain.comment.article.id %}#{{ complain.comment_id }}">
+        <h4 class=" article_h1 blog-article-title">Комментарий к статье - {{ complain.comment.article.title }}</h4>
+    </a>
+    <div class="">
+        <a class="article_h1 nav-link link-dark p-0"
+           href="{% url 'mainapp:profile_page' complain.comment.author_comment.id %}">
+            <h5 class="article_category text-capitalize">
+                {{ complain.comment.author_comment }}
+            </h5>
+        </a>
+        <p class="article_category" style="word-break: break-word;">
+            Комментарий: {{ complain.comment.comment_text|safe }}</p>
+    </div>
+    {% endif %}
+    <div class="author_article">
+        <a class="article_h1 nav-link link-dark p-0" href="{% url 'mainapp:profile_page' complain.submitted_user.id %}">
+            <h5 class="article_category text-capitalize">
+                {{ complain.submitted_user }}</h5>
+        </a>
+
+        <div class="">
+            <p class="article_category" style="word-break: break-word;">
+                Описание: {{ complain.complaint_text }}</p>
+        </div>
+
+        {% include 'lkapp/includes/inс__complain_moderation_buttons.html' %}
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,40 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block css %}
+<link href="{% static 'css/index.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="s2 wf-section">
+    <div class="container-2 w-container article_card shadow p-1 mb-2 bg-white rounded">
+        <div class="article_card p-1 mb-2 bg-white rounded">
+            <div class="dropdown m-2 dropdown_sorting">
+                <button class="btn dropdown-toggle btn-sm" style="background-color: #60bef5; border-color: #60bef5; color: white;" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    &#8595; Дата публикации
+                </button>
+            {% if category %}
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    {% for criteria, sorted_by in sorting_criteria.items %}
+                    <a href="{% url 'main:category_sorted' category.slug sorted_by %}" class="dropdown-item dropdown_sorting_item"
+                        id="{{ sorted_by }}" name="{{ criteria|safe }}">{{ criteria|safe }}</a>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    {% for criteria, sorted_by in sorting_criteria.items %}
+                    <a href="{% url 'main:index_sorted' sorted_by %}" class="dropdown-item dropdown_sorting_item"
+                        id="{{ sorted_by }}" name="{{ criteria|safe }}">{{ criteria|safe }}</a>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="container-3  article_container">
+        {% include 'mainapp/includes/inc__articles_list.html' %}
+    </div>
+</div>
+<script src="{% static 'js/reload_article_list.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,195 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+git
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/lkapp.css' %}"/>
+{% endblock %}
+
+{% block user_menu %}
+    {% include 'lkapp/includes/inc__lk_menu.html' %}
+{% endblock %}
+
+{% block content %}
+    <!-- Основной блок -->
+    <div class="container-2 w-container mt-5 mb-5" style="margin-left: auto; margin-right: auto; max-width: 960px;">
+        <div class="d-flex flex-column justify-content-center bg-light shadow rounded mb-5 p-5">
+            <div class="d-flex flex-wrap justify-content-between mb-5">
+                <div class="d-flex">
+                    <h4 class="d-flex align-items-center mb-2">Профиль</h4>
+                    {% include 'lkapp/includes/inc_author_rate.html' %}
+                </div>
+                <div class="d-flex flex-column flex-wrap">
+                    <div class="d-flex">
+                        <p class="text-center">Роль пользователя: </p>
+                        {% if user.user_role == "moderator" %}
+                            <p class="text-capitalize text-primary ms-1 text-warning">{{ user.user_role }}
+                            </p>
+                        {% endif %}
+                        {% if user.user_role == "user" %}
+                            <p class="text-capitalize text-dark ms-1 text-center">{{ user.user_role }}</p>
+                        {% endif %}
+                        {% if user.user_role == "administrator" %}
+                            <p class="text-capitalize text-primary ms-1 text-center">{{ user.user_role }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <div class="article_likes_counter" id="likes_counter">
+                            <div class="comments_icon" id="img_like_icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="bi bi-heart"
+                                     viewBox="0 0 16 16" id="like_icon_color">
+                                    <path
+                                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                </svg>
+                            </div>
+                            <div id='id_like_count' class="h5">{{ count_likes }}</div>
+                        </div>
+                        <div class="article_dislike_counter">
+                            <div class="dislike_icon" id="img_dislike_icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="bi bi-emoji-frown"
+                                     viewBox="0 0 16 16" id="dislike_icon_color">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path
+                                            d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.498 3.498 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.498 4.498 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+                                </svg>
+                            </div>
+                            <div id='id_dislike_count' class="h5">{{ count_dislikes }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="user-data d-flex justify-content-between mb-2">
+                <div class="col-6 table-responsive">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th scope="col-2">
+                                <p>Имя:</p>
+                            </th>
+                            <td>
+                                <p class="text-capitalize">{{ user.first_name }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                <p>Фамилия:</p>
+                            </th>
+                            <td>
+                                <p class="text-capitalize">{{ user.last_name }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                <p>Логин:</p>
+                            </th>
+                            <td>
+                                <p>{{ user.username }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                <p>Возраст:</p>
+                            </th>
+                            <td>
+                                <p>{{ user.age }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                <p>Пол:</p>
+                            </th>
+                            <td>
+                                <p>{{ user.sex }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                <p>Почта:</p>
+                            </th>
+                            <td>
+                                <p>{{ user.email }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                <p>О себе:</p>
+                            </th>
+                            <td>
+                                <p>{{ user.about_me }}</p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {% if ban %}
+                    <div class="mb-5 col-6">
+                        <p class="h5 mb-3">БАН</p>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <th scope="row">
+                                        <p>Причина:</p>
+                                    </th>
+                                    <td>
+                                        <p class="text-capitalize">{{ ban_info.reason }}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        <p>Комментарий модератора:</p>
+                                    </th>
+                                    <td>
+                                        <p>{{ ban_info.moderator_comment }}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        <p>Время окончания бана:</p>
+                                    </th>
+                                    <td>
+                                        <p>{{ ban_time }}</p>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mail-checkbox d-flex mb-2">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" {% if email_setting %}
+                           checked {% endif %}>
+                    <label class="form-check-label" for="flexSwitchCheckChecked">Отправка уведомлений на
+                        почту</label>
+                </div>
+            </div>
+            <div class="btns d-flex flex-wrap mt-3 justify-content-between" style="padding: 0;">
+                <div class="d-flex flex-wrap">
+                    <a class="btn btn-sm btn-outline-dark me-2 p-1 btn_blue shadow {% if request.resolver_match.url_name == 'profile_update' %} active {% endif %}"
+                       href="{% url 'my_lk:profile_update' user.id %}" role="button">
+                        Редактировать профиль
+                    </a>
+                    <a class="{% if ban %} disabled {% endif %} btn btn-sm btn-outline-dark me-2 p-1 btn_blue text-center shadow {% if request.path == '/my_lk/post/create/' %} active {% endif %}"
+                       href="{% url 'my_lk:post_creation' %}" role="button">
+                        Новый черновик
+                    </a>
+                </div>
+            </div>
+            <footer></footer>
+        </div>
+    </div>
+
+    <script>
+        $("#flexSwitchCheckChecked").click(function () {
+            $.ajax({
+                url: "{% url 'lkapp:switch_email_settings_ajax' user.id %}",
+                success: function (response) {
+                    console.log(response.check)
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

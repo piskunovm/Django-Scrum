@@ -1,0 +1,76 @@
+[
+  {
+    "superuser": true,
+    "username": "django",
+    "first_name": "джанго",
+    "last_name": "джангов",
+    "email": "d.django@inengb.ru",
+    "password": "django",
+    "user_role": "administrator",
+    "is_active": true
+  },
+  {
+    "superuser": false,
+    "username": "ivanov",
+    "first_name": "иван",
+    "last_name": "иванов",
+    "email": "d.django@inengb.ru",
+    "password": "django",
+    "user_role": "moderator",
+    "is_active": true
+  },
+  {
+    "superuser": false,
+    "username": "petrov",
+    "first_name": "петр",
+    "last_name": "петров",
+    "email": "d.django@inengb.ru",
+    "password": "django",
+    "is_active": true
+  },
+  {
+    "superuser": false,
+    "username": "sidorov",
+    "first_name": "сидор",
+    "last_name": "сидоров",
+    "email": "d.django@inengb.ru",
+    "password": "django",
+    "is_active": true
+  },
+  {
+    "superuser": false,
+    "username": "vasechkin",
+    "first_name": "василий",
+    "last_name": "васечкин",
+    "email": "d.django@inengb.ru",
+    "password": "django",
+    "is_active": false
+  },
+  {
+    "superuser": false,
+    "username": "ilyin",
+    "first_name": "илья",
+    "last_name": "ильин",
+    "email": "d.django@inengb.ru",
+    "password": "django",
+    "is_active": true
+  },
+  {
+    "superuser": false,
+    "username": "prokhorov",
+    "first_name": "прохор",
+    "last_name": "прохоров",
+    "email": "d.django@inengb.ru",
+    "password": "django",
+    "is_active": false
+  },
+  {
+    "superuser": false,
+    "username": "bublikov",
+    "first_name": "иван",
+    "last_name": "бубликов",
+    "email": "d.django@inengb.ru",
+    "password": "django",
+    "is_active": true
+  }
+]

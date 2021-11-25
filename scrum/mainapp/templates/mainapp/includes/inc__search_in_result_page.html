@@ -1,0 +1,69 @@
+{% load static %}
+
+<div class="search_card shadow p-3 mb-2 bg-white rounded">
+    <form action="javascript:handleSearch()"
+          class="form-inline search-form">
+        <input type="text" class="form-control search_request"
+               name="search_request" id="search_request"
+               placeholder="Введите запрос..."
+               value="{% if search_request %}{{ search_request }}{% endif %}">
+        <button type="submit"
+                class="btn m-0 ms-3 search_button shadow rounded">Поиск
+        </button>
+    </form>
+    <div class="search_filters" id="search_filters">
+        <div class="menu-2 navbar" style="border-radius: 0 0 0.25rem 0.25rem;">
+            <ul class="nav" style="min-width: 130px;">
+                <li class="nav-item">
+                    <a class="nav-link link-secondary text-center menu_btn m-0 {% if filter == 'posts' %} active shadow rounded {% endif %}"
+                       id="posts" href="{% url 'main:search' %}">
+                        Посты
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link link-secondary text-center menu_btn m-0 {% if filter == 'comments' %} active shadow rounded {% endif %}"
+                       id="comments" href="{% url 'main:search' %}">
+                        Комментарии
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link link-secondary text-center menu_btn m-0 {% if filter == 'users' %} active shadow rounded {% endif %}"
+                       id="users" href="{% url 'main:search' %}">
+                        Пользователи
+                    </a>
+                </li>
+            </ul>
+        </div>
+{#        <div class="dropdown dropdown_sorting">#}
+{#            <button class="btn btn-secondary dropdown-toggle btn-sm"#}
+{#                    style="background-color: #60bef5; border-color: #60bef5; color: white;"#}
+{#                    type="button"#}
+{#                    id="dropdownMenuButton"#}
+{#                    data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                &#8595; Дата публикации#}
+{#            </button>#}
+{#            {% if category %}#}
+{#                <ul class="dropdown-menu"#}
+{#                    aria-labelledby="dropdownMenuButton1">#}
+{#                    {% for criteria, sorted_by in sorting_criteria.items %}#}
+{#                        <a href="{% url 'main:category_sorted' category.slug sorted_by %}"#}
+{#                           class="dropdown-item dropdown_sorting_item"#}
+{#                           id="{{ sorted_by }}"#}
+{#                           name="{{ criteria|safe }}">{{ criteria|safe }}</a>#}
+{#                    {% endfor %}#}
+{#                </ul>#}
+{#            {% else %}#}
+{#                <ul class="dropdown-menu"#}
+{#                    aria-labelledby="dropdownMenuButton1">#}
+{#                    {% for criteria, sorted_by in sorting_criteria.items %}#}
+{#                        <a href="{% url 'main:index_sorted' sorted_by %}"#}
+{#                           class="dropdown-item dropdown_sorting_item"#}
+{#                           id="{{ sorted_by }}"#}
+{#                           name="{{ criteria|safe }}">{{ criteria|safe }}</a>#}
+{#                    {% endfor %}#}
+{#                </ul>#}
+{#            {% endif %}#}
+{#        </div>#}
+    </div>
+</div>
+<script src="{% static 'js/search_page.js' %}"></script>

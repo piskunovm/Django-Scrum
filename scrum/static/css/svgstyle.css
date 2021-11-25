@@ -1,0 +1,7 @@
+.comment_like_icon{
+    fill: green;
+}
+
+.comment_like_icon:click {
+  color: black;
+}

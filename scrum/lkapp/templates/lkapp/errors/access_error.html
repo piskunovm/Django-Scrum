@@ -1,0 +1,23 @@
+<!-- Шаблон для страницы статьи. -->
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{% block css %}
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'css/lkapp.css' %}"/>
+    {#    <link href="{% static 'css/index.css' %}" rel="stylesheet">#}
+    <link href="{% static 'style/style_article.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+
+{% block user_menu %}
+    {#    {% include 'lkapp/includes/inc__lk_menu.html' %}#}
+{% endblock %}
+
+{% block content %}
+    <h3 class="access_error text-center">У вас нет прав на просмотр данной страницы</h3>
+{% endblock content %}

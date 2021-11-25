@@ -1,0 +1,29 @@
+<div class="menu_3_lvl bg-secondary shadow rounded p-3 mt-5 mb-5">
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link link-light menu_filters my_alerts
+            {% if request.resolver_match.url_name == 'my_alerts' %} active_filters shadow rounded {% endif %}" 
+            href="##" id = 'filteralerts' name = 'my_alerts'>Все</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-light menu_filters comment_alerts
+            {% if request.resolver_match.url_name == 'comment_alerts' %} active_filters shadow rounded {% endif %}" 
+            href="##" id = 'filteralerts' name = 'comment_alerts'>Комментарии</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-light menu_filters grade_alerts
+            {% if request.resolver_match.url_name == 'grade_alerts' %} active_filters shadow rounded {% endif %}" 
+            href="##" id = 'filteralerts' name = 'grade_alerts'>Лайки/Дизлайки</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-light menu_filters subscribe_alerts
+            {% if request.resolver_match.url_name == 'subscribe_alerts' %} active_filters shadow rounded {% endif %}"
+            href="##" id = 'filteralerts' name = 'subscribe_alerts'>Подписки</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-light menu_filters moder_alerts
+            {% if request.resolver_match.url_name == 'moder_alerts' %} active_filters shadow rounded {% endif %}"
+            href="##" id = 'filteralerts' name = 'moder_alerts'>От модерации</a>
+        </li>
+    </ul>
+</div>

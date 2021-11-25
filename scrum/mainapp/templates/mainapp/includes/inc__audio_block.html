@@ -1,0 +1,17 @@
+{% load static %}
+
+<dev id="audio_block" name="{% if 'article' in post.audio_name %}done{% else %}{{ post.id }}{% endif %}">
+    {% if post.audio_name == "generating" %}
+        <p class="fst-italic text-secondary">Аудиодорожка генерируется...</p>
+    {% elif post.audio_name == "error" %}
+        <p class="fst-italic text-secondary">Ошибка генерации аудиодорожки :(</p>
+    {% elif post.audio_name == "" %}
+        <p class="fst-italic text-secondary">Аудиодорожка отсутсвует</p>
+    {% else %}
+        <audio class="audio w-100" controls preload="auto">
+            <source src="{{ audio_url }}"
+                    type="audio/mp3">
+        </audio>
+    {% endif %}
+</dev>
+<script src="{% static 'js/set_audio_block.js' %}"></script>

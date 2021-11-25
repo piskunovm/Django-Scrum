@@ -1,0 +1,96 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+git
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/lkapp.css' %}"/>
+{% endblock %}
+
+<!-- {% block user_hello %}
+{% endblock %} -->
+
+{% block user_menu %}
+    {% include 'lkapp/includes/inc__lk_menu.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="container-2 w-container mt-5 mb-5" style="margin-left: auto; margin-right: auto; max-width: 960px;">
+        <div class="d-flex justify-content-center bg-light shadow rounded mb-5 p-5">
+            {#   Старый вариант, если нужен - раскомитить <div class="d-flex flex-column justify-content-center bg-light shadow rounded mb-5 p-5">#}
+            <div class="col-5 me-2">
+                <h4 class="d-block mb-2">Подписки</h4>
+                <div class="subscribes_block">
+                    {% if subscribes %}
+                        {% for subscribe in subscribes %}
+                            <div class="subscribe_block d-flex col-6 my-3">
+                                <div class="image_block col-3">
+                                    {% if not subscribe.avatar %}
+                                        <img class="subscribe_image shadow rounded-circle m-auto"
+                                             src="{% static 'vendor/profile_avatar/default.jpg' %}"
+                                             alt="Avatar">
+                                    {% endif %}
+                                    {% if subscribe.avatar %}
+                                        <img class="subscribe_image shadow rounded-circle m-auto"
+                                             src="{{ media_url }}{{ subscribe.avatar }}" alt="Avatar">
+                                    {% endif %}
+                                </div>
+                                <div class="info_block col-5 mx-4">
+                                    <div class="info_block">
+                                        <a href="{% url 'mainapp:profile_page' subscribe.id %}"
+                                           class="text-decoration-none"><b>{{ subscribe.username }}</b></a>
+                                        <p class="d-block">
+                                            {{ subscribe.first_name|capfirst }}
+                                            {{ subscribe.last_name|capfirst }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <a class="btn btn-sm btn_archive h5"
+                                       href="{% url 'main:follow' subscribe.id %}"
+                                       role="button">Отписаться</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-center mt-5">Вы еще ни на кого не подписались</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-5">
+                <h4 class="d-block mb-2">Подписчики</h4>
+                <div class="subscribes_block">
+                    {% if subscribers %}
+                        {% for subscriber in subscribers %}
+                            <div class="subscribe_block d-flex col-6 my-3">
+                                <div class="image_block col-3">
+                                    {% if not subscriber.avatar %}
+                                        <img class="subscribe_image shadow rounded-circle m-auto"
+                                             src="{% static 'vendor/profile_avatar/default.jpg' %}"
+                                             alt="Avatar">
+                                    {% endif %}
+                                    {% if subscriber.avatar %}
+                                        <img class="subscribe_image shadow rounded-circle m-auto"
+                                             src="{{ media_url }}{{ subscriber.avatar }}" alt="Avatar">
+                                    {% endif %}
+                                </div>
+                                <div class="info_block col-5 mx-4">
+                                    <div class="info_block">
+                                        <a href="{% url 'mainapp:profile_page' subscriber.id %}"
+                                           class="text-decoration-none"><b>{{ subscriber.username }}</b></a>
+                                        <p class="d-block">
+                                            {{ subscriber.first_name|capfirst }}
+                                            {{ subscriber.last_name|capfirst }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-center mt-5">На вас еще никто не подписался</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer></footer>
+    </div>
+{% endblock %}

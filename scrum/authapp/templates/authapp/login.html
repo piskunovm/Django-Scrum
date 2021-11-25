@@ -1,0 +1,28 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/lkapp.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <div class="container-2 w-container p-5 mt-3 mb-5 bg-light shadow rounded"
+         style="width: 100%; margin-left: auto; margin-right: auto; max-width: 960px;">
+        <div><h4>Авторизация</h4></div>
+        <form method="post" class="mx-auto my-5" style="max-width: 300px">
+            {% csrf_token %}
+            {{ login_form|crispy }}
+            <input type="hidden" name="returnurl" value={{ referer_log }}>
+            <button type="submit" class="btn btn-sm btn_save text-center shadow" role="button">Войти</button>
+            <a href="{% url 'auth:register' %}" class="btn btn-sm btn_blue text-center shadow" role="button">
+                Регистрация
+            </a>
+{#            <a href="/login/vk-oauth2"><img src="{% static 'vendor/auth_images/VKAuth_img.png' %}" class="avatar-3"#}
+{#                                            data-toggle="tooltip"#}
+{#                                            title="Логин через ВК">#}
+{#            </a>#}
+        </form>
+    </div>
+
+{% endblock %}

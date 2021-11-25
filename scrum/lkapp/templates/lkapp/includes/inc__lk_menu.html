@@ -1,0 +1,64 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'style/menu.css' %}">
+{% endblock %}
+
+<div class="container-2 rounded bg-light shadow w-container"
+    style="margin-left: auto; margin-right: auto; max-width: 960px;">
+    <header class="header_lk navbar flex-column navbar-dark" style="
+    border-radius: 0.25rem 0.25rem 0 0;
+">
+        <div class="avatar m-auto d-flex flex-column justify-content-center" style="max-width: 200px;">
+            {% if not user.avatar %}
+            <img class="shadow mw-100 rounded-circle m-auto" src="{% static 'vendor/profile_avatar/default.jpg' %}"
+                 alt="Avatar">
+            {% endif %}
+            {% if user.avatar %}
+            <img class="shadow mw-100 rounded-circle m-auto" src="{{ media_url }}{{ user.avatar }}" alt="Avatar">
+            {% endif %}
+        </div>
+        <a class="nav-link link-light my-1 mx-auto menu_welcome" href="{% url 'my_lk:my_profile' user.id %}">Добро пожаловать,
+            {{ user.username }}</a>
+
+    </header>
+    <div class="menu-2 navbar p-3" style="border-radius: 0 0 0.25rem 0.25rem;">
+        <ul class="nav" style="min-width: 130px;">
+            <li class="nav-item">
+                <a class="nav-link link-secondary text-center menu_btn {% if request.resolver_match.url_name == 'my_profile' %} active shadow rounded {% endif %}"
+                   href="{% url 'my_lk:my_profile' user.id %}">Профиль </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-secondary text-center menu_btn {% if request.resolver_match.url_name == 'drafts' %} active shadow rounded {% endif %}"
+                   href="{% url 'my_lk:drafts' %}">Черновики</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-secondary text-center menu_btn {% if 'myposts' in request.path %} active shadow rounded {% endif %}"
+                   href="{% url 'my_lk:my_posts' %}">Мои статьи</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-secondary text-center menu_btn {% if 'mysubscribes' in request.path %} active shadow rounded {% endif %}"
+                    href="{% url 'my_lk:my_subscribes' %}">Подписки</a>
+            </li>
+
+            <!-- Если пользователь с ролью модератор -->
+            {% if user.user_role == "moderator" or user.user_role == "administrator" %}
+            <li class="nav-item">
+                <a class="nav-link link-secondary text-center menu_btn {% if request.resolver_match.url_name == 'posts_for_moderation' %} active shadow rounded {% endif %}"
+                   href="{% url 'my_lk:posts_for_moderation' %}">Модерация</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-secondary text-center menu_btn {% if request.resolver_match.url_name == 'my_complains' %} active shadow rounded {% endif %}"
+                   href="{% url 'my_lk:my_complains' %}">Жалобы</a>
+            </li>
+            {% endif %}
+            <!-- Если пользователь с ролью администратор -->
+            {% if user.user_role == "administrator" %}
+            <li class="nav-item">
+                <a class="nav-link link-secondary text-center menu_btn {% if request.resolver_match.url_name == 'profile_update' %} active shadow rounded {% endif %}"
+                   href="{% url 'my_admin:get_users' %}">Админка</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

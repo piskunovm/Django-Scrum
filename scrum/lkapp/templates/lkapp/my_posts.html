@@ -1,0 +1,64 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/lkapp.css' %}" />
+{% endblock %}
+
+{% block user_menu %}
+{% include 'lkapp/includes/inc__lk_menu.html' %}
+{% endblock %}
+
+{% block content %}
+<!-- Основной блок -->
+<div class="container-2 w-container mt-5 mb-5" style="margin-left: auto; margin-right: auto; max-width: 960px;">
+    <div class="d-block bg-light shadow rounded mb-5 p-5">
+        <!-- Заголовок вкладки -->
+        <h4 class="d-block mb-5">Мои статьи</h4>
+        <!-- Блок с подвкладками -->
+        {% block filter_posts %}
+        {% include 'lkapp/includes/filters_posts.html' %}
+        {% endblock %}
+        <!-- Блок со статьями -->
+        <div id='articlepostblock'>
+            {% include 'lkapp/includes/article_list.html' %}
+        </div>
+    </div>
+</div>
+
+
+{% block javascript %}
+<script>
+    var elems = $("[id^='filterpost']")
+    elems.on("click", function () {
+        var type_post = this.attributes.name.value
+        var url = ''
+        if (type_post == 'published') url = "{% url 'my_lk:published' %}"
+        if (type_post == 'correction') url = "{% url 'my_lk:correction' %}"
+        if (type_post == 'archive') url = "{% url 'my_lk:archive' %}"
+        if (type_post == 'moderation') url = "{% url 'my_lk:moderation' %}"
+        if (type_post == 'my_posts') url = "{% url 'my_lk:myposts_ajax' %}"
+        $.ajax({
+            data: $(this).serialize(), // получаяем данные формы
+            url: url,
+            // если успешно, то
+            success: function (response) {
+                $('.menu_filters').removeClass('active_filters shadow rounded')
+                $('.menu_filters').css('color', '');
+                $('.' + type_post).css('color', '#000');
+                $('.' + type_post).addClass('active_filters shadow rounded')
+                $('#articlepostblock').empty();
+                $('#articlepostblock').html(response);
+            },
+            // если ошибка, то
+            error: function (response) {
+                // предупредим об ошибке
+                console.log(response.responseJSON.errors)
+            }
+
+        })
+    });
+</script>
+{% endblock javascript %}
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'adminapp/base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block main %}
+    <div class="container-2 w-container p-5 mt-3 mb-5shadow rounded"
+         style="width: 100%; margin-left: auto; margin-right: auto; max-width: 960px;">
+        <div><h4>Регистрация нового пользователя</h4></div>
+        <form method="post" enctype="multipart/form-data"
+              class="mx-auto my-5 p-3 text-center rounded "
+              style="max-width: 300px">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary my-auto mx-auto">
+                Зарегистрировать
+            </button>
+            <button type="reset" class="btn btn-danger my-2 mx-auto">Сбросить
+            </button>
+        </form>
+    </div>
+{% endblock %}

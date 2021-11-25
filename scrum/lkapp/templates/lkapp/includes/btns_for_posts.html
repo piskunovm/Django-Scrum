@@ -1,0 +1,27 @@
+{% load static %}
+
+<div class="btns_drafts d-flex justify-content-between m-2 mb-0">
+    <div class="positive_btns">
+        {% if article.status == "correction" or article.status == "published" %}
+        <a href="{% url 'my_lk:edit_post' article.id %}" class="{% if ban %} disabled {% endif %} btn btn-sm btn_blue text-center shadow" role="button">
+            <div class="btns_hover">
+                <p class="m-0">Редактировать</p>
+            </div>
+        </a>
+        {% endif %}
+        <a href="{% url 'my_lk:preview_post' article.id %}" class="btn btn-sm btn_blue text-center shadow" role="button">
+            <div class="btns_hover">
+                <p class="m-0">Предпросмотр</p>
+            </div>
+        </a>
+    </div>
+    <div class="negative_btns">
+        {% if article.status == "published" %}
+        <a href="{% url 'my_lk:deactivate_post' article.id %}" class="btn btn-sm btn-outline-danger btn_archive text-center shadow" role="button">
+            <div class="btns_hover">
+                <p class="m-0">В архив</p>
+            </div>
+        </a>
+        {% endif %}
+    </div>
+</div>

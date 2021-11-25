@@ -1,0 +1,130 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/lkapp.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'style/alerts.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'style/menu.css' %}" />
+{% endblock %}
+
+{% block content %}
+<!-- Основной блок -->
+<div class="container-2 w-container mb-5" style="margin-left: auto; margin-right: auto; max-width: 960px;">
+    <div class="d-block bg-light shadow rounded mb-5 p-5">
+        <!-- Заголовок вкладки -->
+        <h4 class="d-block mb-5">Оповещения</h4>
+        <!-- Меню фильтров -->
+        {% block filter_alerts %}
+        {% include 'lkapp/includes/inc_filter_alerts.html' %}
+        {% endblock %}
+        <!-- Кнопки уведомлений -->
+        {% if alerts %}
+        <div class="neg_btns mb-3">
+            <a class="btn btn-sm btn-outline-danger text-center" role="button"
+                href="{% url 'my_lk:delete_all_alerts' %}">Удалить все оповещения</a>
+            <a class="btn btn-sm btn-outline-danger text-center" role="button"
+                href="{% url 'my_lk:delete_read_alerts' %}">Удалить все прочитанные оповещения</a>
+        </div>
+        {% endif %}
+        <!-- Блок с уведомлениями -->
+        <div id='alertlistblock' name = {{ request.resolver_match.url_name  }}>
+        {% include 'lkapp/includes/alert_list.html' %}
+        </div>
+    </div>
+</div>
+
+{% block javascript %}
+<script>
+    var elems = $("[id^='filteralerts']")
+    elems.on("click", function () {
+        var type_post = this.attributes.name.value
+        var url = ''
+        if (type_post == 'my_alerts') url = "{% url 'my_lk:my_alerts_ajax' %}"
+        if (type_post == 'comment_alerts') url = "{% url 'my_lk:comment_alerts_ajax' %}"
+        if (type_post == 'grade_alerts') url = "{% url 'my_lk:grade_alerts_ajax' %}"
+        if (type_post == 'moder_alerts') url = "{% url 'my_lk:moder_alerts_ajax' %}"
+        if (type_post == 'subscribe_alerts') url = "{% url 'my_lk:subscribe_alerts_ajax' %}"
+        $.ajax({
+            data: $(this).serialize(), // получаяем данные формы
+            url: url,
+            // если успешно, то
+            success: function (response) {
+                $('.menu_filters').removeClass('active_filters shadow rounded')
+                $('.menu_filters').css('color', '');
+                $('.' + type_post).css('color', '#000');
+                $('.' + type_post).addClass('active_filters shadow rounded')
+                $('#alertlistblock').empty();
+                $('#alertlistblock').html(response);
+                document.getElementById('alertlistblock').setAttribute('name', type_post);
+            },
+            // если ошибка, то
+            error: function (response) {
+                // предупредим об ошибке
+                console.log(response.responseJSON.errors)
+            }
+
+        })
+    });
+
+    function read_redirect_ajax(url, type_docs, url_target = ''){
+        $.ajax({
+            url: url,  
+            method: 'post',
+            dataType: 'text',             
+            data: {type_post: type_docs},
+            // если успешно, то
+            success: function (response) {
+                console.log('ok')
+                if (url_target == ''){
+                    $('#alertlistblock').empty();
+                    $('#alertlistblock').html(response);               
+                }
+                else {
+                    window.location.href = url_target    
+                }
+            },
+            // если ошибка, то
+            error: function (response) {
+                // предупредим об ошибке
+                console.log(response.responseJSON.errors)
+            }
+        })  
+    } 
+    
+    $("#alertlistblock").click(function () {
+        if  (event.target.tagName == "EM"){
+            var target_el = event.target.parentNode.parentElement
+            if (target_el.id.length){
+                if (target_el.id == 'redirect' ){
+                    var url = target_el.attributes.name_read.value
+                    var url_target = target_el.attributes.name.value
+                    var type_docs = document.getElementById('alertlistblock').attributes.name.value
+                    console.log('1',url, url_target, type_docs)
+                    read_redirect_ajax(url, type_docs, url_target)
+                }
+            }
+        } else {
+            if ($(event.target.attributes.id).length){
+                if (((event.target.tagName == "P") || (event.target.tagName == "A")) && (event.target.attributes.id.value == 'redirect')){
+                    var url = event.target.attributes.name_read.value
+                    var url_target = event.target.attributes.name.value
+                    var type_docs = document.getElementById('alertlistblock').attributes.name.value
+                    read_redirect_ajax(url, type_docs, url_target)
+                }
+                else if ((event.target.tagName == "P") && ((event.target.attributes.id.value == 'read_alert') || (event.target.attributes.id.value == 'del_alert'))){
+                    var url = event.target.attributes.name.value
+                    var type_docs = document.getElementById('alertlistblock').attributes.name.value
+                    read_redirect_ajax(url, type_docs)
+                }
+            }
+        }
+
+     
+
+    } )   ;
+
+</script>
+{% endblock javascript %}
+
+{% endblock %}

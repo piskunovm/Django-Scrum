@@ -1,0 +1,94 @@
+{% load static %}
+
+<div id="complainagree" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Подтвердить жалобу</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if complain.comment is None %}
+                <p class="mb-2">
+                    Вы действительно хотите отправить пост на доработку?
+                </p>
+                {% else %}
+                <p class="mb-2">
+                    Вы действительно хотите одобрить жалобу?
+                </p>
+                {% endif %}
+            </div>
+            <form action="javascript:handleCorrection()">
+                <div class="form-group col-md-10 mx-auto">
+                    <div class="form-group">
+                        <label for="approveReason">
+                            Укажите причину:
+                        </label>
+                        <textarea onkeyup="checkApproveParams()" class="form-control" id="approveReason" rows="8" placeholder="Комментарий"
+                                  required="required"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-outline-danger" id="approve_button" disabled>
+                            Одобрить
+                        </button>
+                        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">
+                            Отмена
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="complaindenied" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Отклонить жалобу</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2">
+                    Вы действительно хотите отклонить жалобу?
+                </p>
+            </div>
+            <form action="javascript:handleComplain()">
+                <div class="form-group col-md-10 mx-auto">
+                    <div class="form-group">
+                        <label for="denyReason">
+                            Укажите причину:
+                        </label>
+                        <textarea onkeyup="checkDenyParams()" class="form-control" id="denyReason" rows="8" placeholder="Комментарий"
+                                  required="required"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-outline-success" id="deny_button" disabled>
+                            Отправить ответ
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                            Отмена
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<form method="post" class="post_moderation_preview mx-auto rounded justify-content-center">
+    <p id="post_pk" style="display: none">{{ complain.pk }}</p>
+    <button type="button" class="btn btn-sm btn_save mx-0" data-bs-toggle="modal" data-bs-target="#complainagree">
+        Одобрить
+    </button>
+    <button type="button" class="btn btn-sm btn_archive" data-bs-toggle="modal" data-bs-target="#complaindenied">
+        Отклонить
+    </button>
+
+</form>
+
+
+<script src="{% static 'js/set_complain_status.js' %}"></script>

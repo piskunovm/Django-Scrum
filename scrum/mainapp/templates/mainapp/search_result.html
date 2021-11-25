@@ -1,0 +1,34 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block css %}
+    <link href="{% static 'css/search.css' %}" rel="stylesheet">
+    <link href="{% static 'css/index.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="s2 wf-section search-results">
+        <div class="container-3  article_container">
+            {% include 'mainapp/includes/inc__search_in_result_page.html' %}
+            <div class="search_output">
+                {% if posts and posts|length %}
+                    {% include 'mainapp/includes/inc__articles_list.html' %}
+                {% elif comments and comments|length %}
+                    {% include 'mainapp/includes/inc__search_comments_list.html' %}
+                {% elif users and users|length %}
+                    {% include 'mainapp/includes/inc__search_users_list.html' %}
+                {% else %}
+                    {% include 'mainapp/includes/inc__search_not_found.html' %}
+                {% endif %}
+
+
+            </div>
+
+            {#            {% include 'mainapp/includes/inc__search_comments_list.html' %}#}
+            {#            {% include 'mainapp/includes/inc__search_users_list.html' %}#}
+        </div>
+    </div>
+
+{% endblock %}

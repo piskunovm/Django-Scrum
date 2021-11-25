@@ -1,0 +1,29 @@
+{% load static %}
+
+
+<div id="container_audio_block"
+     class="d-flex flex-fill justify-content-between"
+     name="{% if 'article' in article.audio_name or 'error' in article.audio_name %}done{% else %}{{ article.id }}{% endif %}">
+    <div id="audio_block"
+         name="{% if 'article' in article.audio_name %}done{% else %}{{ article.id }}{% endif %}">
+        {% if article.audio_name == "generating" %}
+            <p class="fst-italic text-secondary">Аудиодорожка генерируется...</p>
+        {% elif article.audio_name == "error" %}
+            <p class="fst-italic text-secondary">Ошибка генерации аудиодорожки :(</p>
+        {% elif article.audio_name == "" %}
+            <p class="fst-italic text-secondary">Аудиодорожка отсутсвует</p>
+        {% else %}
+            <audio class="audio w-100" controls preload="auto">
+                <source src="{{ audio_url }}"
+                        type="audio/mp3">
+            </audio>
+        {% endif %}
+    </div>
+    <div id="regenerate_audio" name="{{ article.id }}"
+            {% if article.audio_name == "generating" %}
+         style="display: none"
+            {% endif %}
+         class="btn m-0 ms-3 shadow rounded">
+        Сгенерировать аудио
+    </div>
+</div>

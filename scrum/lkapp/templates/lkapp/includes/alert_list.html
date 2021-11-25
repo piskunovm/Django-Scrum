@@ -1,0 +1,116 @@
+{% load static %}
+
+<!-- Блок со статьями -->
+{% for alert in alerts %}
+{% if alert.not_read == True %}
+<div class="table_alerts table-responsive shadow rounded p-1 mb-3">
+    {% else %}
+    <div class="table-responsive p-1 mb-3">
+        {% endif %}
+        <table class="table table-borderless mb-0" style="font-size: 12px;">
+            {% if alert.not_read == True %}
+            <tr style="font-weight: bold;">
+                {% else %}
+            <tr>
+                {% endif %}
+                <td class="d-flex align-items-center">
+                    <a href="{% url 'my_lk:comment_alerts' %}">
+                        <img src="{% static alert.icon %}" alt="Иконка" width="20" height="20">
+                    </a>
+                    <p class="mb-0 mx-3">{{ alert.created_at }}</p>
+                </td>
+                <td class="d-flex align-items-center">
+                    <a class="nav-link link-dark" href="##" name = "{{ alert.parent_url }}#{{ alert.parent_obj }}" id = "redirect" name_read ="{% url 'my_lk:mark_as_read' alert.id %}">
+                        {% if alert.event_type == 'author_like' or alert.event_type == 'author_dislike' %}
+                        <p class="m-0 mx-1" name = "{{ alert.parent_url }}#{{ alert.parent_obj }}" id = "redirect" name_read ="{% url 'my_lk:mark_as_read' alert.id %}">{{ alert.system_text }}
+                            {% if alert.event_type == 'author_like' %}
+                            <b class="h6 text-success">{{ alert.username }}</b>
+                            {% else %}
+                            <b class="h6 text-danger">{{ alert.username }}</b>
+                            {% endif %}
+                        </p>
+                        {% endif %}
+                        {% if alert.event_type == 'post_like' or alert.event_type == 'post_dislike' %}
+                        <p class="m-0 mx-1" name = "{{ alert.parent_url }}#{{ alert.parent_obj }}" id = "redirect" name_read ="{% url 'my_lk:mark_as_read' alert.id %}">
+                            {% if alert.event_type == 'post_like' %}
+                            <b class="h6 text-success">{{ alert.username }}</b>
+                            {% else %}
+                            <b class="h6 text-danger">{{ alert.username }}</b>
+                            {% endif %}
+                            {{ alert.system_text }}
+                        </p>
+                        {% endif %}
+                        {% if alert.event_type == 'comment' %}
+                        <p class="m-0 mx-1" name = "{{ alert.parent_url }}#{{ alert.parent_obj }}" id = "redirect" name_read ="{% url 'my_lk:mark_as_read' alert.id %}">
+                            {{ alert.system_text }}
+                            <b class="h6 text-success">{{ alert.username }}</b>
+                        </p>
+                        {{ alert.comment|safe }}
+                        {% endif %}
+                        {% if alert.event_type == 'approve_status' or alert.event_type == 'reject_status' %}
+                        <p class="m-0 mx-1" name = "{{ alert.parent_url }}#{{ alert.parent_obj }}" id = "redirect" name_read ="{% url 'my_lk:mark_as_read' alert.id %}">{{ alert.system_text }}</p>
+                        {% endif %}
+                        {% if alert.event_type == 'author_unsubscribe' or alert.event_type == 'author_subscribe' %}
+                        <p class="m-0 mx-1" name = "{{ alert.parent_url }}#{{ alert.parent_obj }}" id = "redirect" name_read ="{% url 'my_lk:mark_as_read' alert.id %}">
+                            {{ alert.system_text }}
+                            {% if alert.event_type == 'author_subscribe' %}
+                            <b class="h6 text-success">{{ alert.username }}</b>
+                            {% else %}
+                            <b class="h6 text-danger">{{ alert.username }}</b>
+                            {% endif %}
+                        </p>
+                        {% endif %}
+                        {% if alert.event_type == 'approve_complaint_post_sub' or alert.event_type == 'reject_complaint_post' or alert.event_type == 'approve_complaint_post_bu'%}
+                        <p class="m-0 mx-1" name = "{{ alert.parent_url }}#{{ alert.parent_obj }}" id = "redirect" name_read ="{% url 'my_lk:mark_as_read' alert.id %}">
+                            {{ alert.system_text }}
+                        </p>
+                        <p style="font-weight: normal" name = "{{ alert.parent_url }}#{{ alert.parent_obj }}" id = "redirect" name_read ="{% url 'my_lk:mark_as_read' alert.id %}">
+                            {{ alert.comment }}
+                        </p>
+                        {% endif %}
+                        {% if alert.event_type == 'approve_complaint_comment_sub' or alert.event_type == 'reject_complaint_comment' or alert.event_type == 'approve_complaint_comment_bu'%}
+                        <p class="m-0 mx-1" name = "{{ alert.parent_url }}#{{ alert.parent_obj }}" id = "redirect" name_read ="{% url 'my_lk:mark_as_read' alert.id %}">
+                            {{ alert.system_text|safe }}
+                        </p>
+                        <p style="font-weight: normal" name = "{{ alert.parent_url }}#{{ alert.parent_obj }}" id = "redirect" name_read ="{% url 'my_lk:mark_as_read' alert.id %}">
+                            {{ alert.comment|safe }}
+                        </p>
+                        {% endif %}
+                        {% if alert.event_type == 'new_post_sub' %}
+                        <p class="m-0 mx-1" name = "{{ alert.parent_url }}#{{ alert.parent_obj }}" id = "redirect" name_read ="{% url 'my_lk:mark_as_read' alert.id %}">
+                            <b class="h6 text-success">{{ alert.username }}</b>
+                            {{ alert.system_text }}
+                        </p>
+                        {% endif %}
+                        {% if alert.event_type == 'user_ban' %}
+                        <p class="m-0 mx-1" name = "{{ alert.parent_url }}#{{ alert.parent_obj }}" id = "redirect" name_read ="{% url 'my_lk:mark_as_read' alert.id %}">
+                            <b class="h6 text-danger">{{ alert.username }}</b>
+                            {{ alert.system_text }}
+                        </p>
+                        <p style="font-weight: normal">
+                            {{ alert.reason }}
+                        </p>
+                        {% endif %}
+                    </a>
+                </td>
+                <td class="btns d-flex justify-content-between align-items-center">
+                    {% if alert.not_read == True %}
+                    <a class="btn btn-sm btn-outline-secondary btn_blue text-center" role="button"
+                        href="##" id = "alert_read" name ="{% url 'my_lk:mark_as_read' alert.id %}">
+                        <div class="btns_hover">
+                            <p class="m-0" name ="{% url 'my_lk:mark_as_read' alert.id %}" id = 'read_alert'>Прочитать</p>
+                        </div>
+                    </a>
+                    {% endif %}
+                    <a class="btn btn-sm btn_archive text-center" role="button"
+                        href="##">
+                        <div class="btns_hover">
+                            <p class="m-0" name = "{% url 'my_lk:delete_alert' alert.id %}" id = 'del_alert'>Стереть</p>
+                        </div>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    {% endfor %}
+</div>

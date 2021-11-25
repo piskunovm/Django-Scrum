@@ -1,0 +1,87 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'style/base.css' %}">
+
+    <title>
+        {{ title | title }}
+    </title>
+
+    {% block css %}
+    <link href="{% static 'vendor/img/61613d29e01708b13887d94f_favicon.ico' %}" rel="shortcut icon" type="image/x-icon">
+    <link href="{% static 'vendor/img/61613d29e01708090d87d950_webclip.png' %}" rel="apple-touch-icon">
+    {% endblock %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+    <meta name="mailru-domain" content="XboGkHHF6KEcbaFY" />
+</head>
+
+<body>
+<div class="container p-0">
+    <header>
+        <div class="s1 wf-section">
+            <div class="container-2 w-container col-lg-">
+                {% block menu %}
+                {% include 'mainapp/includes/inc_menu.html' %}
+                {% endblock menu %}
+            </div>
+        </div>
+    </header>
+    <div class="container-2" style="margin-left: auto; margin-right: auto; max-width: 960px;">
+        {% block user_hello %}
+        {% endblock %}
+    </div>
+    {% block user_menu %} {% endblock %}
+
+    {% block content %}
+    {% block filter_posts %}{% endblock %}
+    {% block btns_posts %}{% endblock %}
+    {% block filter_alerts %}{% endblock %}
+    {% endblock %}
+
+    <footer></footer>
+</div>
+
+
+{% block js %}
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script>
+        function show() {
+            $.ajax({
+                data: $(this).serialize(), // получаяем данные формы
+                url: "{% url 'mainapp:allert_counter' %}",
+                // если успешно, то
+                success: function (response) {
+                    $('.icon-badge').html(response.count_alerts)
+                },
+                // если ошибка, то
+                error: function (response) {
+                    // предупредим об ошибке
+                    console.log(response.responseJSON.errors)
+                }
+
+            })
+        }
+
+        $(document).ready(function () {
+            show();
+            setInterval('show()', 1000);
+        });
+
+</script>
+
+{% endblock %}
+
+
+</body>
+
+</html>
